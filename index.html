@@ -29,52 +29,19 @@ body { background:var(--bg-secondary); color:var(--text-primary); height:100vh; 
 /* 좌측 리스트 */
 #lscroll { flex:1; overflow-y:auto; padding:8px 10px; }
 .lsec-lbl { font-size:12px; font-weight:600; margin:10px 0 4px 2px; }
-/* ── 좌측 리스트 계층 스타일 ── */
-/* 메인 */
-.l-main-row { display:flex; align-items:center; gap:7px; padding:7px 8px; border-radius:var(--radius-sm); cursor:pointer; margin-bottom:4px; background:var(--bg-primary); border:1px solid var(--border-mid); transition:background .1s; }
-.l-main-row:hover { background:var(--bg-tertiary); }
-.l-main-row.sel { background:var(--text-primary); border-color:var(--text-primary); }
-.l-main-row.sel * { color:#fff !important; }
-.l-main-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
-.l-main-text { font-size:12px; font-weight:700; color:var(--text-primary); letter-spacing:-.01em; }
-/* 부메인 */
-.lsec-row { display:flex; align-items:center; gap:6px; padding:5px 7px; border-radius:var(--radius-sm); cursor:pointer; transition:background .1s; margin-top:3px; margin-bottom:1px; }
+/* 리스트 드래그 */
+.lsection { margin-bottom:2px; }
+.lsec-row { display:flex; align-items:center; gap:4px; padding:4px 4px 4px 2px; border-radius:var(--radius-sm); cursor:grab; transition:background .1s; }
 .lsec-row:hover { background:var(--bg-primary); }
-.lsec-row.sel { background:var(--bg-primary); border:1px solid var(--border-mid); }
-.l-sub-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-.l-sub-text { font-size:12px; font-weight:600; flex:1; }
-/* 할일 */
-.ltask-list { padding-left:10px; }
-.litem { display:flex; align-items:flex-start; gap:4px; padding:4px 6px; border-radius:var(--radius-sm); cursor:pointer; margin-bottom:1px; transition:background .1s; border:1px solid transparent; }
+.ltask-list { padding-left:4px; min-height:4px; }
+.ldrag-handle { font-size:13px; color:var(--text-tertiary); cursor:grab; flex-shrink:0; line-height:1; padding:0 2px; opacity:0; transition:opacity .15s; }
+.lsec-row:hover .ldrag-handle,
+.litem:hover .ldrag-handle { opacity:1; }
+.litem { display:flex; align-items:flex-start; gap:5px; padding:5px 6px; border-radius:var(--radius-sm); cursor:pointer; margin-bottom:2px; transition:background .1s, border .1s; border:1px solid transparent; }
 .litem:hover { background:var(--bg-primary); }
 .litem.sel { background:var(--bg-primary); border-color:var(--border-mid); }
-.l-task-prefix { font-size:10px; color:var(--text-tertiary); flex-shrink:0; margin-top:1px; line-height:1.4; }
-.l-task-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; margin-top:4px; }
-.ltext { font-size:11px; color:var(--text-primary); line-height:1.35; word-break:keep-all; }
-.lbadge { font-size:10px; color:var(--text-tertiary); line-height:1.4; margin-top:1px; }
-
-/* ── 우측 카테고리 계층 스타일 ── */
-/* 메인 */
-.r-main-btn { width:100%; display:flex; align-items:center; gap:7px; padding:7px 9px; border-radius:var(--radius-sm); background:var(--bg-primary); border:1px solid var(--border-mid); cursor:pointer; font-size:12px; font-weight:700; color:var(--text-primary); text-align:left; margin-bottom:5px; transition:background .1s; font-family:inherit; letter-spacing:-.01em; }
-.r-main-btn:hover { background:var(--bg-tertiary); }
-.r-main-btn.sel { background:var(--text-primary); color:#fff; border-color:var(--text-primary); }
-.r-main-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
-/* 부메인 */
-.r-sub-btn { width:100%; display:flex; align-items:center; gap:6px; padding:5px 8px; border-radius:var(--radius-sm); background:var(--bg-primary); border:0.5px solid var(--border-light); cursor:pointer; font-size:12px; font-weight:600; text-align:left; margin-bottom:2px; transition:background .1s; font-family:inherit; }
-.r-sub-btn:hover { background:var(--bg-tertiary); }
-.r-sub-btn.sel { background:var(--text-primary); color:#fff !important; border-color:var(--text-primary); }
-.r-sub-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
-/* 할일 */
-.r-task-btn { width:100%; display:flex; align-items:center; gap:4px; padding:3px 8px 3px 16px; border-radius:var(--radius-sm); background:transparent; border:none; cursor:pointer; font-size:11px; text-align:left; margin-bottom:1px; transition:background .1s; font-family:inherit; color:var(--text-secondary); }
-.r-task-btn:hover { background:var(--bg-primary); }
-.r-task-btn.sel { background:var(--bg-primary); border:0.5px solid var(--border-light); color:var(--text-primary); font-weight:500; }
-.r-task-pre { font-size:10px; color:var(--text-tertiary); flex-shrink:0; }
-.r-task-dot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
-/* 드래그 공통 */
-.lsection { margin-bottom:2px; }
-.ldrag-handle { font-size:12px; color:var(--text-tertiary); cursor:grab; flex-shrink:0; opacity:0; transition:opacity .15s; line-height:1; }
-.lsec-row:hover .ldrag-handle, .litem:hover .ldrag-handle { opacity:1; }
 .ldrop-line { border:1.5px dashed var(--border-mid) !important; background:var(--bg-tertiary) !important; }
+.ldot { width:6px; height:6px; border-radius:50%; flex-shrink:0; margin-top:4px; }
 .ltext { font-size:11px; color:var(--text-primary); line-height:1.4; flex:1; word-break:keep-all; }
 .lbadge { font-size:10px; color:var(--text-tertiary); line-height:1.4; margin-top:1px; }
 
@@ -379,6 +346,14 @@ function drawCenter(n){
   let dcTimer=null;
   g.addEventListener('click',()=>{ clearTimeout(dcTimer); dcTimer=setTimeout(()=>{dcTimer=null;},280); selectNode(n.id); });
   g.addEventListener('dblclick',()=>{ clearTimeout(dcTimer); openInlineEditor(n); });
+  /* 터치: 더블탭 감지 */
+  let lastTap=0;
+  g.addEventListener('touchend',e=>{
+    const now=Date.now();
+    if(now-lastTap<300){ openInlineEditor(n); e.preventDefault(); }
+    else selectNode(n.id);
+    lastTap=now;
+  });
 }
 function drawNodeEl(n){
   const pal=nodePal(n),E=EL[n.level]||EL[3],rx=E.rx,ry=E.ry,isSel=selected===n.id;
@@ -392,7 +367,8 @@ function drawNodeEl(n){
   if(n.memo){ n.memo.split('/').map(s=>s.trim()).forEach((ml,mi,arr)=>{ const mx2=n.x+rx+8,my2=n.y+(mi-(arr.length-1)/2)*17,mw=Math.min(ml.length*7+14,130),mh=15; sv.appendChild(mkEl('rect',{x:mx2,y:my2-mh/2,width:mw,height:mh,rx:'5',fill:pal.fill,stroke:pal.stroke,'stroke-width':'0.5'})); const mt=mkEl('text',{x:mx2+6,y:my2,'dominant-baseline':'central',fill:pal.text,'font-size':'9'}); mt.textContent=ml.length>16?ml.slice(0,15)+'…':ml; sv.appendChild(mt); }); }
 
   /* 드래그 */
-  g.addEventListener('mousedown',e=>startDrag(e,n));
+  g.addEventListener('mousedown', e=>startDrag(e,n));
+  g.addEventListener('touchstart', e=>{ if(e.touches.length===1) startDrag(e,n); }, {passive:false});
   /* 더블클릭 인라인 편집 */
   g.addEventListener('dblclick',e=>{ e.stopPropagation(); openInlineEditor(n); });
   /* 싱글 클릭 선택 */
@@ -441,10 +417,37 @@ document.getElementById('inline-input').addEventListener('keydown',e=>{
   if(e.key==='Escape') cancelInlineEdit();
 });
 
-/* ── 드래그 ── */
-function startDrag(e,n){ didDrag=false; dragNode=n; const rect=document.getElementById('center').getBoundingClientRect(); dragOX=e.clientX-rect.left-n.x; dragOY=e.clientY-rect.top-n.y; e.preventDefault(); }
-document.addEventListener('mousemove',e=>{ if(!dragNode||mode!=='expand')return; didDrag=true; const rect=document.getElementById('center').getBoundingClientRect(); const nx=e.clientX-rect.left-dragOX,ny=e.clientY-rect.top-dragOY,dx=nx-dragNode.x,dy=ny-dragNode.y; dragNode.x=nx; dragNode.y=ny; dragNode._dragged=true; if(dragNode.level===1)getSubtreeOffsets(dragNode,dx,dy); renderExpand(); });
-document.addEventListener('mouseup',()=>{ dragNode=null; });
+/* ── 드래그 (마우스 + 터치 공통) ── */
+function getClientPos(e){
+  if(e.touches&&e.touches.length) return{x:e.touches[0].clientX,y:e.touches[0].clientY};
+  if(e.changedTouches&&e.changedTouches.length) return{x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};
+  return{x:e.clientX,y:e.clientY};
+}
+function startDrag(e,n){
+  didDrag=false; dragNode=n;
+  const p=getClientPos(e);
+  const rect=document.getElementById('center').getBoundingClientRect();
+  dragOX=p.x-rect.left-n.x; dragOY=p.y-rect.top-n.y;
+  e.preventDefault();
+}
+function onDragMove(e){
+  if(!dragNode||mode!=='expand')return;
+  didDrag=true;
+  const p=getClientPos(e);
+  const rect=document.getElementById('center').getBoundingClientRect();
+  const nx=p.x-rect.left-dragOX, ny=p.y-rect.top-dragOY;
+  const dx=nx-dragNode.x, dy=ny-dragNode.y;
+  dragNode.x=nx; dragNode.y=ny; dragNode._dragged=true;
+  if(dragNode.level===1)getSubtreeOffsets(dragNode,dx,dy);
+  renderExpand();
+}
+function onDragEnd(){ dragNode=null; }
+
+document.addEventListener('mousemove', onDragMove);
+document.addEventListener('mouseup',   onDragEnd);
+document.addEventListener('touchmove',  e=>{ if(dragNode) e.preventDefault(); onDragMove(e); }, {passive:false});
+document.addEventListener('touchend',   onDragEnd);
+document.addEventListener('touchcancel',onDragEnd);
 
 /* ── 선택 ── */
 function selectNode(id){
@@ -538,34 +541,27 @@ function renderLeft(){
   const root = nodes.find(n=>n.level===0);
   const subs = kids(root.id);
 
-  /* 메인 헤더 */
-  const mainEl = document.createElement('div');
-  mainEl.className = 'l-main-row' + (selected===root.id?' sel':'');
-  mainEl.innerHTML = `<span class="l-main-dot" style="background:${root.customColors?.fill||'#1a1a18'}"></span><span class="l-main-text">${root.text.replace('\n',' ')}</span>`;
-  mainEl.onclick = ()=>selectNode(root.id);
-  area.appendChild(mainEl);
-
+  /* ── 부메인 섹션 (드래그 가능) ── */
   subs.forEach(sub=>{
     const pal = nodePal(sub);
     const section = document.createElement('div');
     section.className = 'lsection';
     section.dataset.id = sub.id;
 
-    /* 부메인 헤더 */
+    /* 부메인 헤더 — 드래그 핸들 포함 */
     const header = document.createElement('div');
-    header.className = 'lsec-row' + (selected===sub.id?' sel':'');
+    header.className = 'lsec-row';
     header.innerHTML = `
       <span class="ldrag-handle" title="드래그해서 순서 변경">⠿</span>
-      <span class="l-sub-dot" style="background:${pal.stroke}"></span>
-      <span class="l-sub-text" style="color:${pal.text}">${sub.text.replace('\n',' ')}</span>`;
+      <span class="lsec-lbl" style="color:${pal.text};margin:0;flex:1">${sub.text.replace('\n',' ')}</span>`;
     header.draggable = true;
-    header.addEventListener('click', ()=>selectNode(sub.id));
     header.addEventListener('dragstart', e=>startListDrag(e, sub.id, 1, section));
     header.addEventListener('dragend',   ()=>endListDrag());
     section.addEventListener('dragover',  e=>onListDragOver(e, sub.id, 1, section));
     section.addEventListener('drop',      e=>onListDrop(e, sub.id, 1));
     section.appendChild(header);
 
+    /* 할일 목록 */
     const taskList = document.createElement('div');
     taskList.className = 'ltask-list';
     taskList.dataset.parentId = sub.id;
@@ -578,9 +574,8 @@ function renderLeft(){
       it.draggable = true;
       it.innerHTML = `
         <span class="ldrag-handle" title="드래그해서 순서 변경">⠿</span>
-        <span class="l-task-prefix">└</span>
-        <span class="l-task-dot" style="background:${tp.stroke}"></span>
-        <div style="flex:1;min-width:0">
+        <span class="ldot" style="background:${tp.stroke}"></span>
+        <div style="flex:1">
           <div class="ltext">${task.text.replace('\n',' ')}</div>
           <div class="lbadge">${schedLabel(task.schedule)||'일정 없음'}</div>
           ${task.memo?`<div class="lbadge" style="font-style:italic">${task.memo.replace(/\//g,', ')}</div>`:''}
@@ -593,6 +588,7 @@ function renderLeft(){
       taskList.appendChild(it);
     });
 
+    /* 빈 taskList도 drop 대상 */
     taskList.addEventListener('dragover', e=>{ if(listDrag.level===2) e.preventDefault(); });
     taskList.addEventListener('drop',     e=>{ if(listDrag.level===2){ e.preventDefault(); onListDrop(e, null, 2, sub.id); } });
     section.appendChild(taskList);
@@ -755,28 +751,20 @@ function renderRight(){
   rs.innerHTML=`
 <div class="rsec">
   <div class="rlbl">카테고리</div>
-  <button class="r-main-btn${selected===root.id?' sel':''}" onclick="selectNode(${root.id})">
-    <span class="r-main-dot" style="background:${root.customColors?.fill||'#1a1a18'}"></span>
-    <span>${root.text.replace('\n',' ')}</span>
+  <button class="rtag${selected===root.id?' sel':''}" onclick="selectNode(${root.id})">
+    <span class="rtag-dot" style="background:${root.customColors?.fill||'#1a1a18'}"></span>${root.text.replace('\n',' ')}
   </button>
   ${subs.map(sub=>{
     const p=nodePal(sub);
     const tasks=kids(sub.id);
-    return `
-  <button class="r-sub-btn${selected===sub.id?' sel':''}" onclick="selectNode(${sub.id})">
-    <span class="r-sub-dot" style="background:${p.stroke}"></span>
-    <span style="color:${selected===sub.id?'inherit':p.text}">${sub.text.replace('\n',' ')}</span>
-  </button>
-  ${tasks.map(t=>{const tp=nodePal(t);return`
-  <button class="r-task-btn${selected===t.id?' sel':''}" onclick="selectNode(${t.id})">
-    <span class="r-task-pre">└</span>
-    <span class="r-task-dot" style="background:${tp.stroke}"></span>
-    <span style="color:${selected===t.id?'inherit':tp.text}">${t.text.replace('\n',' ')}</span>
-  </button>`;}).join('')}`;
+    return `<button class="rtag${selected===sub.id?' sel':''}" onclick="selectNode(${sub.id})" style="margin-top:5px">
+      <span class="rtag-dot" style="background:${p.stroke}"></span>${sub.text.replace('\n',' ')}
+    </button>${tasks.map(t=>{const tp=nodePal(t);return`<button class="rtag rtag-task${selected===t.id?' sel':''}" onclick="selectNode(${t.id})"><span class="rtag-dot" style="background:${tp.stroke}"></span>${t.text.replace('\n',' ')}</button>`;}).join('')}`;
   }).join('')}
+
   ${sel&&(sel.level===0||sel.level===1)?`
-  <div class="color-picker-box">
-    <div class="rslbl" style="margin-top:8px">색상 설정</div>
+  <div class="color-picker-box" id="color-picker-box">
+    <div class="rslbl" style="margin-top:10px">색상 설정 — ${sel.level===0?'배경색 / 텍스트색':'배경색 / 텍스트색 / 테두리색'}</div>
     <div class="cprow">
       <label class="cplbl">배경</label>
       <input type="color" class="cpinput" id="cp-fill" value="${sel.level===0?(sel.customColors?.fill||'#1a1a18'):(nodePal(sel).fill)}" oninput="previewColor('fill',this.value)">
