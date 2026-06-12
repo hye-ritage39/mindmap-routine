@@ -26,8 +26,69 @@ body { background:var(--bg-secondary); color:var(--text-primary); height:100vh; 
 /* 패널 타이틀 */
 .ptitle { font-size:14px; font-weight:600; color:var(--text-primary); padding:13px 13px 9px; border-bottom:1px solid var(--border-light); flex-shrink:0; }
 
-/* 좌측 리스트 */
-#lscroll { flex:1; overflow-y:auto; padding:8px 10px; }
+/* 좌측 리스트 계층 */
+.l-main-row{display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:4px;background:var(--bg-primary);border:1px solid var(--border-mid);transition:background .1s;}
+.l-main-row:hover{background:var(--bg-tertiary);}
+.l-main-row.sel{background:var(--text-primary);border-color:var(--text-primary);}
+.l-main-row.sel *{color:#fff!important;}
+.l-main-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.l-main-text{font-size:12px;font-weight:700;color:var(--text-primary);}
+.lsec-row{display:flex;align-items:center;gap:6px;padding:5px 7px;border-radius:var(--radius-sm);cursor:pointer;transition:background .1s;margin-top:3px;margin-bottom:1px;}
+.lsec-row:hover{background:var(--bg-primary);}
+.lsec-row.sel{background:var(--bg-primary);border:1px solid var(--border-mid);}
+.l-sub-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.l-sub-text{font-size:12px;font-weight:600;flex:1;}
+.ltask-list{padding-left:10px;}
+.litem{display:flex;align-items:flex-start;gap:4px;padding:4px 6px;border-radius:var(--radius-sm);cursor:pointer;margin-bottom:1px;transition:background .1s;border:1px solid transparent;}
+.litem:hover{background:var(--bg-primary);}
+.litem.sel{background:var(--bg-primary);border-color:var(--border-mid);}
+.l-task-prefix{font-size:10px;color:var(--text-tertiary);flex-shrink:0;margin-top:1px;line-height:1.4;}
+.l-task-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.ltext{font-size:11px;color:var(--text-primary);line-height:1.35;word-break:keep-all;}
+.lbadge{font-size:10px;color:var(--text-tertiary);line-height:1.4;margin-top:1px;}
+.lsection{margin-bottom:2px;}
+.ldrag-handle{font-size:12px;color:var(--text-tertiary);cursor:grab;flex-shrink:0;opacity:0;transition:opacity .15s;line-height:1;}
+.lsec-row:hover .ldrag-handle,.litem:hover .ldrag-handle{opacity:1;}
+.ldrop-line{border:1.5px dashed var(--border-mid)!important;background:var(--bg-tertiary)!important;}
+
+/* 우측 카테고리 계층 */
+.r-main-btn{width:100%;display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:var(--radius-sm);background:var(--bg-primary);border:1px solid var(--border-mid);cursor:pointer;font-size:12px;font-weight:700;color:var(--text-primary);text-align:left;margin-bottom:5px;transition:background .1s;font-family:inherit;}
+.r-main-btn:hover{background:var(--bg-tertiary);}
+.r-main-btn.sel{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.r-main-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.r-sub-btn{width:100%;display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:var(--radius-sm);background:var(--bg-primary);border:0.5px solid var(--border-light);cursor:pointer;font-size:12px;font-weight:600;text-align:left;margin-bottom:2px;transition:background .1s;font-family:inherit;}
+.r-sub-btn:hover{background:var(--bg-tertiary);}
+.r-sub-btn.sel{background:var(--text-primary);color:#fff!important;border-color:var(--text-primary);}
+.r-sub-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.r-task-btn{width:100%;display:flex;align-items:center;gap:4px;padding:3px 8px 3px 16px;border-radius:var(--radius-sm);background:transparent;border:none;cursor:pointer;font-size:11px;text-align:left;margin-bottom:1px;transition:background .1s;font-family:inherit;color:var(--text-secondary);}
+.r-task-btn:hover{background:var(--bg-primary);}
+.r-task-btn.sel{background:var(--bg-primary);border:0.5px solid var(--border-light);color:var(--text-primary);font-weight:500;}
+.r-task-pre{font-size:10px;color:var(--text-tertiary);flex-shrink:0;}
+.r-task-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+
+/* 파일 관리 패널 */
+#file-panel{flex-shrink:0;border-top:1px solid var(--border-light);background:var(--bg-secondary);}
+#file-panel-header{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;cursor:pointer;user-select:none;transition:background .1s;}
+#file-panel-header:hover{background:var(--bg-tertiary);}
+.file-panel-title{font-size:11px;font-weight:600;color:var(--text-secondary);}
+#file-panel-arrow{font-size:13px;color:var(--text-tertiary);transition:transform .2s;}
+#file-panel-arrow.open{transform:rotate(90deg);}
+#file-list-wrap{display:none;padding:4px 8px 6px;}
+#file-list-wrap.open{display:block;}
+#file-list{max-height:160px;overflow-y:auto;margin-bottom:6px;}
+.fitem{display:flex;align-items:center;gap:6px;padding:5px 7px;border-radius:var(--radius-sm);cursor:pointer;font-size:11px;color:var(--text-secondary);transition:background .1s;}
+.fitem:hover{background:var(--bg-primary);color:var(--text-primary);}
+.fitem.active{background:var(--bg-primary);color:var(--text-primary);font-weight:600;border:0.5px solid var(--border-mid);}
+.fitem-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.fitem-del{font-size:12px;color:var(--text-tertiary);background:none;border:none;cursor:pointer;padding:0 2px;opacity:0;line-height:1;}
+.fitem:hover .fitem-del{opacity:1;}
+.fitem-del:hover{color:#A32D2D;}
+#file-actions{display:flex;gap:5px;}
+.faction-btn{flex:1;height:26px;font-size:11px;border:1px solid var(--border-light);border-radius:var(--radius-sm);background:var(--bg-primary);color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:background .1s;}
+.faction-btn:hover{background:var(--bg-tertiary);}
+.faction-btn.new{background:var(--text-primary);color:#fff;border-color:var(--text-primary);}
+.faction-btn.new:hover{opacity:.85;}
+#lscroll{flex:1;overflow-y:auto;padding:8px 10px;min-height:0;}
 .lsec-lbl { font-size:12px; font-weight:600; margin:10px 0 4px 2px; }
 /* 리스트 드래그 */
 .lsection { margin-bottom:2px; }
@@ -151,9 +212,30 @@ svg#mm { position:absolute; inset:0; width:100%; height:100%; }
 <body>
 <div id="app">
   <div id="main">
-    <div id="left"><div class="ptitle">리스트</div><div id="lscroll"></div></div>
+    <div id="left">
+      <div class="ptitle">리스트</div>
+      <div id="lscroll"></div>
+      <div id="file-panel">
+        <div id="file-panel-header" onclick="toggleFilePanel()">
+          <span class="file-panel-title">📁 내 작업</span>
+          <span id="file-panel-arrow">›</span>
+        </div>
+        <div id="file-list-wrap">
+          <div id="file-list"></div>
+          <div id="file-actions">
+            <button class="faction-btn" onclick="saveCurrentFile()">💾 저장</button>
+            <button class="faction-btn new" onclick="newFile()">＋ 신규</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="center">
       <svg id="mm"></svg>
+      <!-- 캔버스 하단 버튼 -->
+      <div style="position:absolute;bottom:14px;left:12px;z-index:10;display:flex;gap:7px">
+        <button onclick="resetView()" style="padding:5px 11px;font-size:11px;border:1px solid var(--border-mid);border-radius:20px;background:var(--bg-primary);color:var(--text-secondary);cursor:pointer;font-family:inherit;opacity:0.85">⌖ 뷰 초기화</button>
+        <button onclick="nodiArrange()" style="padding:5px 12px;font-size:11px;border:1px solid var(--border-mid);border-radius:20px;background:var(--bg-primary);color:var(--text-secondary);cursor:pointer;font-family:inherit;opacity:0.85">🔵 노디 이동 정리</button>
+      </div>
       <!-- 인라인 편집 오버레이 -->
       <div id="inline-editor">
         <textarea id="inline-input" rows="2"></textarea>
@@ -182,9 +264,7 @@ svg#mm { position:absolute; inset:0; width:100%; height:100%; }
 </div>
 
 <script>
-
-/* ── 팔레트 ── */
-const PALETTE={
+const PALETTE = {
   0:{l1:'#0C447C',l1bg:'#E6F1FB',l2:'#378ADD',l2bg:'#EEF5FD'},
   1:{l1:'#712B13',l1bg:'#FAECE7',l2:'#D85A30',l2bg:'#FDF3EF'},
   2:{l1:'#085041',l1bg:'#E1F5EE',l2:'#1D9E75',l2bg:'#EDF8F4'},
@@ -193,133 +273,95 @@ const PALETTE={
   5:{l1:'#72243E',l1bg:'#FBEAF0',l2:'#D4537E',l2bg:'#FDF0F5'},
   6:{l1:'#3d3d3a',l1bg:'#F1EFE8',l2:'#888780',l2bg:'#F7F6F2'},
 };
-const EL={0:{ry:62,rx:62},1:{ry:28,rx:54},2:{ry:20,rx:38},3:{ry:13,rx:22}};
-const JITTER=[{ar:1,dr:1},{ar:.93,dr:1.07},{ar:1.06,dr:.95},{ar:.97,dr:1.04},{ar:1.05,dr:.98},{ar:.95,dr:1.06},{ar:1.03,dr:.93},{ar:.99,dr:1.03}];
-const DAYS_KO=['월','화','수','목','금','토','일'];
-
-function getPal(ci,lv,cc){
-  if(cc&&cc.stroke)return cc;
+function getPal(ci,lv,customColors){
+  if(customColors&&customColors.stroke) return customColors;
   const p=PALETTE[ci%7];
   return lv===1?{stroke:p.l1,fill:p.l1bg,text:p.l1}:{stroke:p.l2,fill:p.l2bg,text:p.l2};
 }
-function mixW(hex,r){
-  const ri=parseInt(hex.slice(1,3),16),gi=parseInt(hex.slice(3,5),16),bi=parseInt(hex.slice(5,7),16);
-  return '#'+[ri,gi,bi].map(v=>Math.round(v+(255-v)*r).toString(16).padStart(2,'0')).join('');
+
+/* hex 색상을 흰색 방향으로 mix (ratio 0~1, 클수록 연해짐) */
+function mixWithWhite(hex, ratio){
+  const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16);
+  const nr=Math.round(r+(255-r)*ratio);
+  const ng=Math.round(g+(255-g)*ratio);
+  const nb=Math.round(b+(255-b)*ratio);
+  return '#'+[nr,ng,nb].map(v=>v.toString(16).padStart(2,'0')).join('');
 }
+
 function nodePal(n){
-  if(n.level<=1||!n.pid)return getPal(n.color,n.level,n.customColors);
-  const par=byId(n.pid);
-  const sub=par&&par.level===1?par:null;
-  if(sub&&sub.customColors&&sub.customColors.stroke){
-    const sc=sub.customColors.stroke;
-    return{stroke:mixW(sc,.35),fill:mixW(sc,.82),text:mixW(sc,.20)};
+  if(n.level<=1 || !n.pid) return getPal(n.color, n.level, n.customColors);
+
+  /* level 2+ : 부메인 customColors가 있으면 연한 버전으로 파생 */
+  const parent=byId(n.pid);
+  const sub=parent&&parent.level===1?parent:(parent?byId(parent.pid):null);
+  const subNode=parent&&parent.level===1?parent:null;
+
+  if(subNode&&subNode.customColors&&subNode.customColors.stroke){
+    const sc=subNode.customColors.stroke;
+    /* 테두리: 부메인 색의 60% 연하게, 배경: 85% 연하게, 텍스트: 부메인 색 그대로 */
+    return {
+      stroke: mixWithWhite(sc, 0.35),
+      fill:   mixWithWhite(sc, 0.82),
+      text:   mixWithWhite(sc, 0.20),
+    };
   }
-  return getPal(n.color,n.level,n.customColors);
+
+  return getPal(n.color, n.level, n.customColors);
 }
 
-function emptySchedule(){return{enabled:false,type:'daily',days:[],startHour:9,duration:1};}
-function emptyNode(id,pid,level,color){return{id,pid,text:'',level,memo:'',color,x:0,y:0,schedule:emptySchedule(),customColors:null};}
-function blankNodes(){return[emptyNode(1,null,0,0),emptyNode(2,1,1,0),emptyNode(3,1,1,1),emptyNode(4,2,2,0)];}
+const EL = { 0:{ry:62,rx:62}, 1:{ry:28,rx:54}, 2:{ry:20,rx:38}, 3:{ry:13,rx:22} };
+const JITTER = [{ar:1,dr:1},{ar:.93,dr:1.07},{ar:1.06,dr:.95},{ar:.97,dr:1.04},{ar:1.05,dr:.98},{ar:.95,dr:1.06},{ar:1.03,dr:.93},{ar:.99,dr:1.03}];
+const DAYS_KO = ['월','화','수','목','금','토','일'];
 
-/* ── 상태 ── */
-let seq=10,selected=null,mode='expand',monthlyPos='bottom';
-let editSched=emptySchedule(),newSched=emptySchedule();
-let inlineNodeId=null;
-let pendingColors={};
+/* schedule = null(비활성) 또는 { type, days, startHour, duration } */
+function emptySchedule(){ return { enabled:false, type:'daily', days:[], startHour:9, duration:1 }; }
 
-/* 팬/줌 */
-let vx=0,vy=0,vscale=1;
-let dragNode=null,dragOX=0,dragOY=0,didDrag=false;
-let isPanning=false,panLast={x:0,y:0};
-let pinchStartDist=0,pinchStartScale=1;
+let seq=30, selected=null, mode='expand', monthlyPos='bottom';
+let dragNode=null, dragOX=0, dragOY=0, didDrag=false;
+let editSched = emptySchedule();
+let newSched  = emptySchedule();
 
-/* 히스토리 */
+/* 인라인 편집 상태 */
+let inlineNodeId = null;
+
+/* ── 히스토리 ── */
 const history=[];
-function saveHistory(){history.push(JSON.stringify(nodes));if(history.length>30)history.shift();updateUndoBtn();}
-function undo(){if(!history.length)return;nodes=JSON.parse(history.pop());selected=null;cancelInlineEdit();updateUndoBtn();render();showToast('↩ 되돌렸어요');}
-function updateUndoBtn(){const b=document.getElementById('undo-btn');if(b){b.disabled=history.length===0;b.style.opacity=history.length===0?'0.35':'1';}}
-function showToast(msg){let t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t);}t.textContent=msg;t.className='toast-show';clearTimeout(t._timer);t._timer=setTimeout(()=>{t.className='';},2200);}
+function saveHistory(){ history.push(JSON.stringify(nodes)); if(history.length>30)history.shift(); updateUndoBtn(); }
+function undo(){ if(!history.length)return; nodes=JSON.parse(history.pop()); selected=null; cancelInlineEdit(); updateUndoBtn(); render(); showToast('↩ 되돌렸어요'); }
+function updateUndoBtn(){ const b=document.getElementById('undo-btn'); if(b){b.disabled=history.length===0; b.style.opacity=history.length===0?'0.35':'1';} }
+function showToast(msg){ let t=document.getElementById('toast'); if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t);} t.textContent=msg; t.className='toast-show'; clearTimeout(t._timer); t._timer=setTimeout(()=>{t.className='';},2200); }
 
-/* ── 파일 관리 ── */
-const LS_KEY='nodi_files',LS_CUR='nodi_current',AUTO_KEY='nodi_autosave';
-let currentFileId=null;
-function loadFileList(){try{return JSON.parse(localStorage.getItem(LS_KEY)||'[]');}catch(e){return[];}}
-function saveFileList(list){localStorage.setItem(LS_KEY,JSON.stringify(list));}
-function toggleFilePanel(){
-  const wrap=document.getElementById('file-list-wrap'),arrow=document.getElementById('file-panel-arrow');
-  const open=wrap.classList.toggle('open');arrow.classList.toggle('open',open);
-  if(open)renderFileList();
-}
-function renderFileList(){
-  const list=loadFileList(),el=document.getElementById('file-list');
-  if(!list.length){el.innerHTML='<div style="font-size:11px;color:var(--text-tertiary);padding:6px 7px">저장된 파일 없음</div>';return;}
-  el.innerHTML='';
-  list.slice().reverse().forEach(f=>{
-    const it=document.createElement('div');it.className='fitem'+(f.id===currentFileId?' active':'');
-    it.innerHTML=`<span style="font-size:12px">📄</span><span class="fitem-name" title="${f.name}">${f.name}</span><button class="fitem-del" onclick="deleteFile('${f.id}',event)">✕</button>`;
-    it.addEventListener('click',()=>loadFile(f.id));el.appendChild(it);
-  });
-}
-function saveCurrentFile(){
-  const root=nodes.find(n=>n.level===0);
-  const defaultName=root&&root.text?root.text.replace('\n',' '):'새 작업';
-  const name=prompt('파일 이름',currentFileId?(loadFileList().find(f=>f.id===currentFileId)?.name||defaultName):defaultName);
-  if(!name)return;
-  const list=loadFileList(),data={nodes:JSON.parse(JSON.stringify(nodes)),seq,vx,vy,vscale};
-  if(currentFileId){const idx=list.findIndex(f=>f.id===currentFileId);if(idx>=0){list[idx].name=name;list[idx].data=data;list[idx].updated=Date.now();}else{list.push({id:currentFileId,name,data,created:Date.now(),updated:Date.now()});}}
-  else{currentFileId='f'+Date.now();list.push({id:currentFileId,name,data,created:Date.now(),updated:Date.now()});}
-  saveFileList(list);localStorage.setItem(LS_CUR,currentFileId);showToast('💾 "'+name+'" 저장됐어요');renderFileList();
-}
-function loadFile(id){
-  const list=loadFileList(),f=list.find(x=>x.id===id);if(!f)return;
-  if(!confirm('"'+f.name+'" 불러올까요?'))return;
-  nodes=JSON.parse(JSON.stringify(f.data.nodes));seq=f.data.seq||10;
-  vx=f.data.vx||0;vy=f.data.vy||0;vscale=f.data.vscale||1;
-  currentFileId=id;localStorage.setItem(LS_CUR,id);selected=null;
-  nodes.forEach(n=>n._dragged=false);showToast('📂 "'+f.name+'" 불러왔어요');renderFileList();render();
-}
-function deleteFile(id,e){
-  e.stopPropagation();const list=loadFileList(),f=list.find(x=>x.id===id);if(!f)return;
-  if(!confirm('"'+f.name+'" 삭제?'))return;
-  saveFileList(list.filter(x=>x.id!==id));if(currentFileId===id)currentFileId=null;
-  showToast('🗑 삭제됐어요');renderFileList();
-}
-function newFile(){
-  if(!confirm('새 작업 시작? 현재 작업을 먼저 저장해주세요.'))return;
-  currentFileId=null;localStorage.removeItem(LS_CUR);
-  seq=10;vx=0;vy=0;vscale=1;selected=null;nodes=blankNodes();
-  showToast('✨ 새 작업 시작');renderFileList();render();
-}
+/* ── 노드 데이터 ── */
+let nodes = [
+  {id:1,  pid:null, text:'블로그\n키우기', level:0, memo:'', color:0, x:0, y:0, schedule:emptySchedule()},
+  {id:2,  pid:1,    text:'네이버',         level:1, memo:'', color:0, x:0, y:0, schedule:emptySchedule()},
+  {id:3,  pid:1,    text:'티스토리',       level:1, memo:'', color:1, x:0, y:0, schedule:emptySchedule()},
+  {id:4,  pid:1,    text:'스레드 홍보',    level:1, memo:'', color:2, x:0, y:0, schedule:emptySchedule()},
+  {id:5,  pid:1,    text:'블로그 스팟',    level:1, memo:'', color:3, x:0, y:0, schedule:emptySchedule()},
+  {id:6,  pid:2, text:'경제 포스팅', level:2, memo:'반도체 ETF',           color:0, x:0, y:0,
+    schedule:{enabled:true, type:'weekdays', days:[0,1,2,3,4], startHour:21, duration:1}},
+  {id:7,  pid:2, text:'영화 후기',   level:2, memo:'영화 호퍼스',          color:0, x:0, y:0,
+    schedule:{enabled:true, type:'weekly',   days:[5],          startHour:20, duration:2}},
+  {id:8,  pid:3, text:'지원금 포스팅',level:2,memo:'냉방비 지원',          color:1, x:0, y:0,
+    schedule:{enabled:true, type:'weekly',   days:[1,3],        startHour:10, duration:1}},
+  {id:9,  pid:3, text:'방송 정보',   level:2, memo:'생생정보 / 6시 내고향',color:1, x:0, y:0,
+    schedule:{enabled:true, type:'weekdays', days:[0,1,2,3,4],  startHour:18, duration:1}},
+];
 
-/* ── 노드 데이터 초기화 ── */
-let nodes=blankNodes();
-(function restoreSession(){
-  try{
-    const lastId=localStorage.getItem(LS_CUR);
-    if(!lastId)return;
-    const list=JSON.parse(localStorage.getItem(LS_KEY)||'[]');
-    const f=list.find(x=>x.id===lastId);if(!f)return;
-    nodes=JSON.parse(JSON.stringify(f.data.nodes));
-    seq=f.data.seq||10;vx=f.data.vx||0;vy=f.data.vy||0;vscale=f.data.vscale||1;
-    currentFileId=lastId;
-  }catch(e){}
-})();
+function kids(pid){ return nodes.filter(n=>n.pid===pid); }
+function byId(id){ return nodes.find(n=>n.id===id); }
+function rootColor(n){ if(n.level<=1)return n.color; const p=byId(n.pid); return p?rootColor(p):0; }
+function getSubtreeOffsets(node,dx,dy){ kids(node.id).forEach(c=>{c.x+=dx;c.y+=dy;c._dragged=true;getSubtreeOffsets(c,dx,dy);}); }
 
-/* ── 유틸 ── */
-function kids(pid){return nodes.filter(n=>n.pid===pid);}
-function byId(id){return nodes.find(n=>n.id===id);}
-function rootColor(n){if(n.level<=1)return n.color;const p=byId(n.pid);return p?rootColor(p):0;}
-function getSubtreeOffsets(node,dx,dy){kids(node.id).forEach(c=>{c.x+=dx;c.y+=dy;c._dragged=true;getSubtreeOffsets(c,dx,dy);});}
-
-/* ── 스케줄 ── */
 function schedLabel(s){
-  if(!s||!s.enabled)return'';
+  if(!s||!s.enabled)return '';
   const tm={daily:'매일',weekdays:'평일',weekend:'주말',weekly:'요일',biweekly:'격주',monthly:'매월'};
   let str=tm[s.type]||s.type;
-  if((s.type==='weekly'||s.type==='biweekly')&&s.days&&s.days.length)str+=' '+s.days.map(d=>DAYS_KO[d]).join(', ');
-  if(s.type==='monthly'&&s.monthlyCount)str+=` ${s.monthlyCount}회`;
-  if(s.startHour!=null)str+=` ${String(s.startHour).padStart(2,'0')}:00`;
-  if(s.duration&&s.duration>1)str+=`~${String(s.startHour+s.duration).padStart(2,'0')}:00`;
+  if((s.type==='weekly'||s.type==='biweekly')&&s.days&&s.days.length)
+    str+=' '+s.days.map(d=>DAYS_KO[d]).join(', ');
+  if(s.type==='monthly'&&s.monthlyCount) str+=` ${s.monthlyCount}회`;
+  if(s.startHour!=null) str+=` ${String(s.startHour).padStart(2,'0')}:00`;
+  if(s.duration&&s.duration>1) str+=`~${String(s.startHour+s.duration).padStart(2,'0')}:00`;
   return str;
 }
 function schedToDays(s){
@@ -331,616 +373,25 @@ function schedToDays(s){
   return[];
 }
 
-/* ── SVG 헬퍼 ── */
 const sv=document.getElementById('mm');
-function cw(){return document.getElementById('center').offsetWidth||600;}
-function ch(){return document.getElementById('center').offsetHeight||700;}
-function mkEl(tag,attrs){
-  const el=document.createElementNS('http://www.w3.org/2000/svg',tag);
-  Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));return el;
-}
+function cw(){ return document.getElementById('center').offsetWidth||520; }
+function ch(){ return document.getElementById('center').offsetHeight||760; }
+function mkEl(tag,attrs){ const el=document.createElementNS('http://www.w3.org/2000/svg',tag); Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v)); return el; }
 
-/* ── 팬/줌 변환 ── */
-function clientToCanvas(cx,cy){
-  const rect=document.getElementById('center').getBoundingClientRect();
-  return{x:(cx-rect.left-vx)/vscale,y:(cy-rect.top-vy)/vscale};
-}
-function applyTransform(){
-  const g=document.getElementById('mm-world');
-  if(g)g.setAttribute('transform',`translate(${vx},${vy}) scale(${vscale})`);
-}
-
-/* ── 레이아웃: 겹치지 않게, 노드 크기 감안 ── */
+/* ── 레이아웃 ── */
 function autoLayout(){
-  const root=nodes.find(n=>n.level===0);
-  if(!root)return;
-  root.x=cw()/2;root.y=ch()/2;
-  const subs=kids(root.id);
-  const N=subs.length||1;
-  /* 부메인 반경: 메인 반경(62) + 부메인 반경(54) + 여유(40) */
-  const subR=62+54+40;
-  subs.forEach((sub,i)=>{
-    if(sub._dragged)return;
-    const a=(i/N)*Math.PI*2-Math.PI/2+(i%2===0?.08:-.08);
-    sub.x=root.x+Math.cos(a)*subR;
-    sub.y=root.y+Math.sin(a)*subR;
-    const tasks=kids(sub.id);
-    const T=tasks.length||1;
-    /* 하위 노드 반경: 부메인 반경(54) + 하위 반경(38) + 여유(30) */
-    const taskR=54+38+30;
-    const fanSpan=Math.min(Math.PI*0.8,T*0.5);
-    tasks.forEach((task,ti)=>{
-      if(task._dragged)return;
-      const ta=a+(ti-(T-1)/2)*(fanSpan/Math.max(T-1,1));
-      task.x=sub.x+Math.cos(ta)*taskR;
-      task.y=sub.y+Math.sin(ta)*taskR;
-    });
+  const root=nodes.find(n=>n.level===0); root.x=cw()/2; root.y=ch()/2;
+  layoutChildren(root,-Math.PI/2,Math.PI*2,Math.min(cw(),ch())*0.30);
+}
+function layoutChildren(parent,startA,spanA,dist){
+  const cs=kids(parent.id); if(!cs.length)return;
+  cs.forEach((c,i)=>{
+    if(c._dragged)return;
+    const j=JITTER[(i+parent.id)%JITTER.length];
+    const a=startA+spanA*(i+0.5)/cs.length+(i%2===0?.07:-.07);
+    c.x=parent.x+Math.cos(a)*dist*j.dr; c.y=parent.y+Math.sin(a)*dist*j.ar;
+    layoutChildren(c,a-spanA/cs.length*.5,spanA/cs.length*1.1,dist*.60);
   });
-}
-
-/* ── 확장형 렌더 ── */
-function applyTransformExpand(){
-  const g=document.getElementById('mm-world');
-  if(g)g.setAttribute('transform',`translate(${vx},${vy}) scale(${vscale})`);
-}
-function renderExpand(){
-  sv.innerHTML='';
-  const world=document.createElementNS('http://www.w3.org/2000/svg','g');
-  world.id='mm-world';
-  world.setAttribute('transform',`translate(${vx},${vy}) scale(${vscale})`);
-  sv.appendChild(world);
-  autoLayout();
-  const root=nodes.find(n=>n.level===0);if(!root)return;
-  function drawTree(node){
-    kids(node.id).forEach(c=>{
-      const pal=nodePal(c);
-      drawCurve(world,node.x,node.y,c.x,c.y,pal.stroke,node.level===0?1.8:1.1,node.level===0?.45:.28,c.id);
-      drawTree(c);drawNodeEl(world,c);
-    });
-  }
-  drawTree(root);drawCenter(world,root);
-}
-function drawCurve(container,x1,y1,x2,y2,color,sw,op,seed){
-  const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy)||1;
-  const s=(seed%2===0?1:-1),ox=(-dy/len)*s*len*.08,oy=(dx/len)*s*len*.08;
-  container.appendChild(mkEl('path',{d:`M${x1} ${y1} Q${mx+ox} ${my+oy} ${x2} ${y2}`,fill:'none',stroke:color,'stroke-width':sw,opacity:op,'stroke-linecap':'round'}));
-}
-function drawCenter(container,n){
-  const cc=n.customColors,bg=cc&&cc.fill?cc.fill:'#1a1a18',tc=cc&&cc.text?cc.text:'#ffffff';
-  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
-  g.appendChild(mkEl('circle',{cx:n.x,cy:n.y,r:62,fill:bg}));
-  n.text.split('\n').forEach((ln,i,a)=>{
-    const t=mkEl('text',{x:n.x,y:n.y+(i-(a.length-1)/2)*20,'text-anchor':'middle','dominant-baseline':'central',fill:tc,'font-size':'16','font-weight':'600'});
-    t.textContent=ln;g.appendChild(t);
-  });
-  container.appendChild(g);
-  g.style.cursor='default';
-  let lastTap=0;
-  g.addEventListener('click',()=>selectNode(n.id));
-  g.addEventListener('dblclick',()=>openInlineEditor(n));
-  g.addEventListener('touchend',e=>{const now=Date.now();if(now-lastTap<320){openInlineEditor(n);e.preventDefault();}else selectNode(n.id);lastTap=now;});
-}
-function drawNodeEl(container,n){
-  const pal=nodePal(n),E=EL[n.level]||EL[3],rx=E.rx,ry=E.ry,isSel=selected===n.id;
-  const g=document.createElementNS('http://www.w3.org/2000/svg','g');g.style.cursor='grab';
-  g.appendChild(mkEl('ellipse',{cx:n.x,cy:n.y,rx,ry,fill:isSel?pal.stroke:pal.fill,stroke:pal.stroke,'stroke-width':isSel?0:1}));
-  const fs=n.level===1?13:n.level===2?11:9;
-  n.text.split('\n').forEach((ln,i,a)=>{
-    const t=mkEl('text',{x:n.x,y:n.y+(i-(a.length-1)/2)*(fs+2),'text-anchor':'middle','dominant-baseline':'central',fill:isSel?'#fff':pal.text,'font-size':fs,'font-weight':'600'});
-    t.textContent=ln;g.appendChild(t);
-  });
-  const topY=n.y-ry,lbl=schedLabel(n.schedule);
-  if(lbl){const ft=mkEl('text',{x:n.x,y:topY-12,'text-anchor':'middle','dominant-baseline':'central',fill:pal.stroke,'font-size':'9'});ft.textContent=lbl;g.appendChild(ft);}
-  if(n.memo){
-    n.memo.split('/').map(s=>s.trim()).forEach((ml,mi,arr)=>{
-      const mx2=n.x+rx+8,my2=n.y+(mi-(arr.length-1)/2)*17,mw=Math.min(ml.length*7+14,130),mh=15;
-      container.appendChild(mkEl('rect',{x:mx2,y:my2-mh/2,width:mw,height:mh,rx:'5',fill:pal.fill,stroke:pal.stroke,'stroke-width':'0.5'}));
-      const mt=mkEl('text',{x:mx2+6,y:my2,'dominant-baseline':'central',fill:pal.text,'font-size':'9'});
-      mt.textContent=ml.length>16?ml.slice(0,15)+'…':ml;container.appendChild(mt);
-    });
-  }
-  let lastTap=0;
-  g.addEventListener('mousedown',e=>startDrag(e,n));
-  g.addEventListener('touchstart',e=>{if(e.touches.length===1)startDrag(e,n);},{passive:true});
-  g.addEventListener('dblclick',e=>{e.stopPropagation();openInlineEditor(n);});
-  g.addEventListener('touchend',e=>{
-    const now=Date.now();
-    if(now-lastTap<320&&!didDrag){openInlineEditor(n);e.preventDefault();}
-    else if(!didDrag)selectNode(n.id);
-    lastTap=now;
-  });
-  g.addEventListener('click',()=>{if(!didDrag)selectNode(n.id);});
-  container.appendChild(g);
-}
-
-/* ── 드래그 ── */
-function getPos(e){
-  if(e.touches&&e.touches.length)return{x:e.touches[0].clientX,y:e.touches[0].clientY};
-  return{x:e.clientX,y:e.clientY};
-}
-function startDrag(e,n){
-  didDrag=false;dragNode=n;
-  const p=getPos(e),cp=clientToCanvas(p.x,p.y);
-  dragOX=cp.x-n.x;dragOY=cp.y-n.y;
-  e.stopPropagation();
-  if(e.type==='mousedown')e.preventDefault();
-}
-function moveDrag(cx,cy){
-  if(!dragNode||mode!=='expand')return;
-  didDrag=true;
-  const cp=clientToCanvas(cx,cy);
-  const nx=cp.x-dragOX,ny=cp.y-dragOY;
-  const dx=nx-dragNode.x,dy=ny-dragNode.y;
-  dragNode.x=nx;dragNode.y=ny;dragNode._dragged=true;
-  if(dragNode.level===1)getSubtreeOffsets(dragNode,dx,dy);
-  applyTransformExpand();
-  /* 선만 업데이트 */
-  renderExpand();
-}
-
-/* 마우스 이벤트 */
-sv.addEventListener('mousedown',e=>{
-  if(dragNode||mode!=='expand')return;
-  isPanning=true;panLast={x:e.clientX,y:e.clientY};e.preventDefault();
-});
-document.addEventListener('mousemove',e=>{
-  if(dragNode){moveDrag(e.clientX,e.clientY);return;}
-  if(!isPanning||mode!=='expand')return;
-  vx+=e.clientX-panLast.x;vy+=e.clientY-panLast.y;
-  panLast={x:e.clientX,y:e.clientY};applyTransform();
-});
-document.addEventListener('mouseup',()=>{dragNode=null;isPanning=false;});
-
-/* 터치 이벤트 */
-sv.addEventListener('touchstart',e=>{
-  if(mode!=='expand')return;
-  if(e.touches.length===2){
-    dragNode=null;isPanning=false;
-    const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
-    pinchStartDist=Math.sqrt(dx*dx+dy*dy);pinchStartScale=vscale;
-  }else if(!dragNode){
-    isPanning=true;panLast={x:e.touches[0].clientX,y:e.touches[0].clientY};
-  }
-},{passive:true});
-document.addEventListener('touchmove',e=>{
-  if(e.touches.length===2&&mode==='expand'){
-    e.preventDefault();
-    const dx=e.touches[0].clientX-e.touches[1].clientX,dy=e.touches[0].clientY-e.touches[1].clientY;
-    const dist=Math.sqrt(dx*dx+dy*dy);
-    vscale=Math.max(0.3,Math.min(3,pinchStartScale*(dist/pinchStartDist)));
-    applyTransform();return;
-  }
-  if(dragNode&&mode==='expand'){e.preventDefault();moveDrag(e.touches[0].clientX,e.touches[0].clientY);return;}
-  if(!isPanning||mode!=='expand')return;
-  e.preventDefault();
-  vx+=e.touches[0].clientX-panLast.x;vy+=e.touches[0].clientY-panLast.y;
-  panLast={x:e.touches[0].clientX,y:e.touches[0].clientY};applyTransform();
-},{passive:false});
-document.addEventListener('touchend',()=>{dragNode=null;isPanning=false;});
-document.addEventListener('touchcancel',()=>{dragNode=null;isPanning=false;});
-
-/* 휠 줌 */
-sv.addEventListener('wheel',e=>{
-  if(mode!=='expand')return;e.preventDefault();
-  const rect=document.getElementById('center').getBoundingClientRect();
-  const mx=e.clientX-rect.left,my=e.clientY-rect.top;
-  const ns=Math.max(0.3,Math.min(3,vscale*(e.deltaY>0?.9:1.1)));
-  vx=mx-(mx-vx)*(ns/vscale);vy=my-(my-vy)*(ns/vscale);vscale=ns;applyTransform();
-},{passive:false});
-
-/* ── 뷰 초기화 ── */
-function resetView(){vx=0;vy=0;vscale=1;nodes.forEach(n=>n._dragged=false);render();}
-
-/* ── 노디 이동 정리 ── */
-function nodiArrange(){
-  const root=nodes.find(n=>n.level===0);
-  const subs=kids(root.id);const N=subs.length;if(!N)return;
-  const subR=62+54+40;
-  subs.forEach((sub,i)=>{
-    const a=(i/N)*Math.PI*2-Math.PI/2;
-    sub.x=root.x+Math.cos(a)*subR;sub.y=root.y+Math.sin(a)*subR;sub._dragged=true;
-    const tasks=kids(sub.id);const T=tasks.length;
-    if(!T)return;
-    const taskR=54+38+30;
-    const fanSpan=Math.min(Math.PI*0.8,T*0.5);
-    tasks.forEach((task,ti)=>{
-      const ta=a+(ti-(T-1)/2)*(fanSpan/Math.max(T-1,1));
-      task.x=sub.x+Math.cos(ta)*taskR;task.y=sub.y+Math.sin(ta)*taskR;task._dragged=true;
-    });
-  });
-  showToast('🔵 노디가 정리했어요');renderExpand();
-}
-
-/* ── 인라인 편집 ── */
-function openInlineEditor(n){
-  cancelInlineEdit();inlineNodeId=n.id;
-  const editor=document.getElementById('inline-editor'),input=document.getElementById('inline-input');
-  input.value=n.text.replace('\n',' ');
-  const E=EL[n.level]||EL[3];
-  const rect=document.getElementById('center').getBoundingClientRect();
-  /* 노드 화면 위치: 캔버스 좌표 → 화면 좌표 */
-  const sx=n.x*vscale+vx,sy=(n.y-E.ry-10)*vscale+vy;
-  editor.style.left=sx+'px';editor.style.top=sy+'px';editor.style.transform='translateX(-50%)';
-  editor.classList.add('visible');input.focus();input.select();
-}
-function confirmInlineEdit(){
-  if(!inlineNodeId)return;const n=byId(inlineNodeId);
-  const val=document.getElementById('inline-input').value.trim();
-  if(val&&val!==n.text.replace('\n',' ')){saveHistory();n.text=val;showToast('✓ 수정됐어요');}
-  cancelInlineEdit();render();
-}
-function cancelInlineEdit(){inlineNodeId=null;document.getElementById('inline-editor').classList.remove('visible');}
-document.getElementById('inline-input').addEventListener('keydown',e=>{if(e.key==='Escape')cancelInlineEdit();});
-
-/* ── 선택 ── */
-function selectNode(id){
-  selected=id;pendingColors={};
-  const n=byId(id);
-  if(n&&n.schedule)editSched={...n.schedule,days:[...(n.schedule.days||[])]};
-  else editSched=emptySchedule();
-  render();
-}
-
-/* ── 리스트형 ── */
-function renderList(){
-  sv.innerHTML='';const W=cw(),px=50;let y=50;
-  const root=nodes.find(n=>n.level===0);if(!root)return;
-  const title=mkEl('text',{x:W/2,y,fill:'#1a1a18','text-anchor':'middle','font-size':'18','font-weight':'700','dominant-baseline':'central'});
-  title.textContent=root.text.replace('\n',' ')||'(제목 없음)';sv.appendChild(title);y+=40;
-  sv.appendChild(mkEl('line',{x1:px,y1:y,x2:W-px,y2:y,stroke:'#e2dfd8','stroke-width':'1'}));y+=22;
-  kids(root.id).forEach(sub=>{
-    const pal=nodePal(sub);
-    sv.appendChild(mkEl('rect',{x:px,y:y-2,width:W-px*2,height:28,rx:'6',fill:pal.fill,stroke:pal.stroke,'stroke-width':'0.8'}));
-    const sl=mkEl('text',{x:px+13,y:y+13,fill:pal.text,'font-size':'13','font-weight':'600','dominant-baseline':'central'});
-    sl.textContent=sub.text||'(미입력)';sv.appendChild(sl);y+=36;
-    kids(sub.id).forEach(task=>{
-      const tp=nodePal(task);
-      const tl=mkEl('text',{x:px+22,y:y+7,fill:tp.text,'font-size':'12','dominant-baseline':'central','font-weight':'500'});
-      tl.textContent='· '+(task.text||'(미입력)');sv.appendChild(tl);
-      const lbl=schedLabel(task.schedule);
-      if(lbl){const fl=mkEl('text',{x:W-px-10,y:y+7,fill:tp.text,'font-size':'10','dominant-baseline':'central','text-anchor':'end',opacity:'.75'});fl.textContent=lbl;sv.appendChild(fl);}
-      y+=22;
-      if(task.memo){task.memo.split('/').forEach(m=>{const ml=mkEl('text',{x:px+36,y:y+5,fill:'#999890','font-size':'10','dominant-baseline':'central'});ml.textContent='→ '+m.trim();sv.appendChild(ml);y+=17;});}
-      y+=4;
-    });y+=8;
-  });
-}
-
-/* ── 스케줄 모드 ── */
-function renderSched(){
-  sv.innerHTML='';
-  const W=cw(),H=ch(),H_START=6,H_END=24,padL=40,padT=28,colW=Math.floor((W-padL)/7),gridH=H-padT-6,hPx=gridH/(H_END-H_START);
-  DAYS_KO.forEach((d,i)=>{
-    const x=padL+i*colW+colW/2;
-    const hdr=mkEl('text',{x,y:14,'text-anchor':'middle','dominant-baseline':'central',fill:'#555550','font-size':'11','font-weight':'600'});
-    hdr.textContent=d;sv.appendChild(hdr);
-    sv.appendChild(mkEl('rect',{x:padL+i*colW+1,y:padT,width:colW-2,height:gridH,rx:'4',fill:i>=5?'#f7f6f3':'#ffffff',stroke:'#e2dfd8','stroke-width':'0.8'}));
-  });
-  for(let h=H_START;h<=H_END;h+=2){
-    const y=padT+(h-H_START)*hPx;
-    const sl=mkEl('text',{x:padL-5,y,'text-anchor':'end','dominant-baseline':'central',fill:'#999890','font-size':'9'});
-    sl.textContent=`${String(h).padStart(2,'0')}:00`;sv.appendChild(sl);
-    if(h>H_START)sv.appendChild(mkEl('line',{x1:padL,y1:y,x2:W,y2:y,stroke:'#e2dfd8','stroke-width':'0.5','stroke-dasharray':h%6===0?'':'3,3'}));
-  }
-  const cc=Array.from({length:7},()=>[]);
-  nodes.filter(n=>n.level===2&&n.schedule&&n.schedule.enabled&&n.schedule.type!=='monthly').forEach(task=>{
-    const pal=nodePal(task),s=task.schedule,dd=schedToDays(s);
-    dd.forEach(di=>{
-      const sh=Math.max(s.startHour,H_START),eh=Math.min(s.startHour+(s.duration||1),H_END);
-      const y=padT+(sh-H_START)*hPx,bh=(eh-sh)*hPx-2;
-      const overlap=cc[di].filter(b=>b.sh<eh&&b.eh>sh).length;
-      const bw=Math.max(colW-10-overlap*4,20),bx=padL+di*colW+3+overlap*4;
-      cc[di].push({sh,eh});
-      sv.appendChild(mkEl('rect',{x:bx,y,width:bw,height:Math.max(bh,14),rx:'4',fill:pal.fill,stroke:pal.stroke,'stroke-width':'0.7'}));
-      const bt=mkEl('text',{x:bx+5,y:y+Math.max(bh,14)/2,'dominant-baseline':'central',fill:pal.text,'font-size':'9.5','font-weight':'500'});
-      bt.textContent=task.text.length>7?task.text.slice(0,6)+'…':task.text;sv.appendChild(bt);
-    });
-  });
-}
-
-/* ── 월간 바 ── */
-function renderMonthlyBar(){
-  const bar=document.getElementById('monthly-bar'),items=document.getElementById('monthly-items');
-  if(mode!=='sched'||monthlyPos==='hide'){bar.classList.remove('visible');return;}
-  const monthly=nodes.filter(n=>n.level===2&&n.schedule&&n.schedule.enabled&&n.schedule.type==='monthly');
-  if(!monthly.length){bar.classList.remove('visible');return;}
-  bar.classList.add('visible');items.innerHTML='';
-  monthly.forEach(task=>{
-    const pal=nodePal(task);
-    const chip=document.createElement('div');chip.className='mb-chip';
-    chip.style.cssText=`border-color:${pal.stroke};color:${pal.text};background:${pal.fill}`;
-    chip.innerHTML=`<span style="width:6px;height:6px;border-radius:50%;background:${pal.stroke};flex-shrink:0;display:inline-block"></span>${task.text||''}<span style="opacity:.7;font-size:10px">${schedLabel(task.schedule)}</span>`;
-    items.appendChild(chip);
-  });
-  bar.style.order=monthlyPos==='top'?'-1':'';
-}
-function setMonthlyPos(pos){monthlyPos=pos;['bottom','top','hide'].forEach(p=>document.getElementById('sov-'+p).classList.toggle('on',p===pos));renderMonthlyBar();}
-
-/* ── 좌측 리스트 ── */
-let listDrag={active:false,nodeId:null,level:null,srcEl:null,overNodeId:null,dropBefore:true};
-function renderLeft(){
-  const area=document.getElementById('lscroll');area.innerHTML='';
-  const root=nodes.find(n=>n.level===0);if(!root)return;
-  const subs=kids(root.id);
-  const mainEl=document.createElement('div');
-  mainEl.className='l-main-row'+(selected===root.id?' sel':'');
-  mainEl.innerHTML=`<span class="l-main-dot" style="background:${root.customColors?.fill||'#1a1a18'}"></span><span class="l-main-text">${root.text||'(제목 없음)'}</span>`;
-  mainEl.onclick=()=>selectNode(root.id);area.appendChild(mainEl);
-  subs.forEach(sub=>{
-    const pal=nodePal(sub);
-    const section=document.createElement('div');section.className='lsection';section.dataset.id=sub.id;
-    const header=document.createElement('div');
-    header.className='lsec-row'+(selected===sub.id?' sel':'');
-    header.innerHTML=`<span class="ldrag-handle">⠿</span><span class="l-sub-dot" style="background:${pal.stroke}"></span><span class="l-sub-text" style="color:${pal.text}">${sub.text||'(미입력)'}</span>`;
-    header.draggable=true;
-    header.addEventListener('click',()=>selectNode(sub.id));
-    header.addEventListener('dragstart',e=>startListDrag(e,sub.id,1,section));
-    header.addEventListener('dragend',()=>endListDrag());
-    section.addEventListener('dragover',e=>onListDragOver(e,sub.id,1,section));
-    section.addEventListener('drop',e=>onListDrop(e,sub.id,1));
-    section.appendChild(header);
-    const taskList=document.createElement('div');taskList.className='ltask-list';taskList.dataset.parentId=sub.id;
-    kids(sub.id).forEach(task=>{
-      const tp=nodePal(task);
-      const it=document.createElement('div');it.className='litem'+(selected===task.id?' sel':'');it.dataset.id=task.id;it.draggable=true;
-      it.innerHTML=`<span class="ldrag-handle">⠿</span><span class="l-task-prefix">└</span><span class="l-task-dot" style="background:${tp.stroke}"></span><div style="flex:1;min-width:0"><div class="ltext">${task.text||'(미입력)'}</div><div class="lbadge">${schedLabel(task.schedule)||'일정 없음'}</div>${task.memo?`<div class="lbadge" style="font-style:italic">${task.memo.replace(/\//g,', ')}</div>`:''}</div>`;
-      it.addEventListener('click',()=>selectNode(task.id));
-      it.addEventListener('dragstart',e=>startListDrag(e,task.id,2,it));
-      it.addEventListener('dragend',()=>endListDrag());
-      it.addEventListener('dragover',e=>onListDragOver(e,task.id,2,it));
-      it.addEventListener('drop',e=>onListDrop(e,task.id,2));
-      taskList.appendChild(it);
-    });
-    taskList.addEventListener('dragover',e=>{if(listDrag.level===2)e.preventDefault();});
-    taskList.addEventListener('drop',e=>{if(listDrag.level===2){e.preventDefault();onListDrop(e,null,2,sub.id);}});
-    section.appendChild(taskList);area.appendChild(section);
-  });
-}
-function startListDrag(e,nodeId,level,el){listDrag={active:true,nodeId,level,srcEl:el};e.dataTransfer.effectAllowed='move';el.style.opacity='0.45';}
-function endListDrag(){if(listDrag.srcEl)listDrag.srcEl.style.opacity='';document.querySelectorAll('.ldrop-line').forEach(e=>e.classList.remove('ldrop-line'));listDrag={active:false,nodeId:null,level:null,srcEl:null};}
-function onListDragOver(e,overId,level,el){
-  if(!listDrag.active||listDrag.level!==level||listDrag.nodeId===overId)return;
-  e.preventDefault();document.querySelectorAll('.ldrop-line').forEach(x=>x.classList.remove('ldrop-line'));
-  el.classList.add('ldrop-line');
-  listDrag.dropBefore=e.clientY<el.getBoundingClientRect().top+el.getBoundingClientRect().height/2;
-  listDrag.overNodeId=overId;
-}
-function onListDrop(e,overId,level,fallbackPid){
-  e.preventDefault();if(!listDrag.active||listDrag.level!==level)return;
-  const dragId=listDrag.nodeId;if(dragId===overId)return;
-  saveHistory();
-  if(level===1){
-    const root=nodes.find(n=>n.level===0),subs=kids(root.id);
-    const ai=subs.findIndex(n=>n.id===dragId),bi=subs.findIndex(n=>n.id===overId);
-    if(ai<0||bi<0)return;
-    const aIdx=nodes.indexOf(subs[ai]),bIdx=nodes.indexOf(subs[bi]);
-    [nodes[aIdx],nodes[bIdx]]=[nodes[bIdx],nodes[aIdx]];
-  }else{
-    const dn=byId(dragId);if(!dn)return;
-    if(overId===null){if(fallbackPid)dn.pid=fallbackPid;}
-    else{
-      const on=byId(overId);if(!on)return;
-      const di=nodes.indexOf(dn);nodes.splice(di,1);
-      const newOi=nodes.indexOf(on);
-      nodes.splice(listDrag.dropBefore?newOi:newOi+1,0,dn);
-      dn.pid=on.pid;
-    }
-  }
-  render();
-}
-
-/* ── 색상 피커 ── */
-function copyHex(el){
-  const hex=el.textContent.trim();
-  navigator.clipboard.writeText(hex).then(()=>showToast('📋 '+hex+' 복사됐어요')).catch(()=>{const ta=document.createElement('textarea');ta.value=hex;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('📋 '+hex+' 복사됐어요');});
-}
-function previewColor(key,val){
-  pendingColors[key]=val;
-  const el=document.getElementById('cpv-'+key);if(el)el.textContent=val;
-  const n=byId(selected);if(!n)return;
-  if(!n.customColors)n.customColors={};n.customColors[key]=val;
-  if(mode==='expand')renderExpand();
-}
-function applyColor(){const n=byId(selected);if(!n)return;saveHistory();if(!n.customColors)n.customColors={};Object.assign(n.customColors,pendingColors);pendingColors={};showToast('✓ 색상 적용됐어요');render();}
-function resetColor(){const n=byId(selected);if(!n)return;saveHistory();n.customColors=null;pendingColors={};showToast('↺ 초기화됐어요');render();}
-
-/* ── 스케줄 UI ── */
-function schedUI(prefix,sched){
-  const enabled=sched&&sched.enabled;
-  const s=enabled?sched:{type:'daily',days:[],startHour:9,duration:1,monthlyCount:1};
-  const mc=s.monthlyCount||1;
-  const types=[{v:'daily',l:'매일'},{v:'weekdays',l:'평일'},{v:'weekend',l:'주말'},{v:'weekly',l:'요일지정'},{v:'biweekly',l:'격주'},{v:'monthly',l:'매월'}];
-  const hours=Array.from({length:24},(_,i)=>`<option value="${i}"${s.startHour===i?' selected':''}>${String(i).padStart(2,'0')}:00</option>`).join('');
-  const durs=[1,2,3,4].map(d=>`<option value="${d}"${(s.duration||1)===d?' selected':''}>${d}시간</option>`).join('');
-  const dayBtns=DAYS_KO.map((d,i)=>`<button class="dpill${(s.days||[]).includes(i)?' on':''}" onclick="toggleSchedDay('${prefix}',${i})">${d}</button>`).join('');
-  const showDays=(s.type==='weekly'||s.type==='biweekly')?'':'display:none';
-  const showMonthly=s.type==='monthly'?'':'display:none';
-  return `<div class="sched-toggle-row" onclick="toggleSchedEnabled('${prefix}')"><div class="toggle-track${enabled?' on':''}"><div class="toggle-thumb"></div></div><span class="toggle-label">타임블록 설정</span></div>
-<div class="sched-body${enabled?'':' hidden'}" id="${prefix}-sched-body">
-  <div class="sched-slbl">반복 주기</div>
-  <div class="freq-pills" id="${prefix}-type-pills">${types.map(t=>`<button class="fpill${s.type===t.v?' on':''}" onclick="setSchedType('${prefix}','${t.v}')">${t.l}</button>`).join('')}</div>
-  <div id="${prefix}-day-wrap" style="${showDays}"><div class="sched-slbl">요일</div><div class="day-pills" id="${prefix}-days">${dayBtns}</div></div>
-  <div id="${prefix}-monthly-wrap" style="${showMonthly}"><div class="sched-slbl">월 횟수</div><div style="display:flex;align-items:center;gap:6px"><input type="number" min="1" max="31" value="${mc}" class="rinput" style="width:60px;height:28px;font-size:12px;margin:0" onchange="setMonthlyCount('${prefix}',this.value)"><span style="font-size:11px;color:var(--text-secondary)">회 / 월</span></div></div>
-  <div class="time-row"><select onchange="setSchedHour('${prefix}',this.value)">${hours}</select><span class="time-sep">+</span><select onchange="setSchedDur('${prefix}',this.value)">${durs}</select></div>
-</div>`;
-}
-function toggleSchedEnabled(prefix){
-  const s=prefix==='new'?newSched:editSched;s.enabled=!s.enabled;
-  const body=document.getElementById(`${prefix}-sched-body`);
-  const track=body&&body.previousElementSibling?body.previousElementSibling.querySelector('.toggle-track'):null;
-  if(body)body.classList.toggle('hidden',!s.enabled);if(track)track.classList.toggle('on',s.enabled);
-}
-function setSchedType(prefix,val){
-  const s=prefix==='new'?newSched:editSched;s.type=val;
-  if(val==='weekdays')s.days=[0,1,2,3,4];else if(val==='weekend')s.days=[5,6];else if(val==='daily')s.days=[];
-  const labels={daily:'매일',weekdays:'평일',weekend:'주말',weekly:'요일지정',biweekly:'격주',monthly:'매월'};
-  document.querySelectorAll(`#${prefix}-type-pills .fpill`).forEach(b=>b.classList.toggle('on',b.textContent.trim()===labels[val]));
-  const dw=document.getElementById(`${prefix}-day-wrap`);if(dw)dw.style.display=(val==='weekly'||val==='biweekly')?'':'none';
-  const mw=document.getElementById(`${prefix}-monthly-wrap`);if(mw)mw.style.display=val==='monthly'?'':'none';
-}
-function toggleSchedDay(prefix,idx){
-  const s=prefix==='new'?newSched:editSched;
-  const i=s.days.indexOf(idx);if(i>=0)s.days.splice(i,1);else s.days.push(idx);s.days.sort((a,b)=>a-b);
-  document.querySelectorAll(`#${prefix}-days .dpill`).forEach((b,i)=>b.classList.toggle('on',s.days.includes(i)));
-}
-function setSchedHour(prefix,v){(prefix==='new'?newSched:editSched).startHour=parseInt(v);}
-function setSchedDur(prefix,v){(prefix==='new'?newSched:editSched).duration=parseInt(v);}
-function setMonthlyCount(prefix,v){(prefix==='new'?newSched:editSched).monthlyCount=Math.max(1,parseInt(v)||1);}
-
-/* ── 우측 패널 ── */
-function renderRight(){
-  const rs=document.getElementById('rscroll');
-  const sel=selected?byId(selected):null;
-  const root=nodes.find(n=>n.level===0);if(!root){rs.innerHTML='';return;}
-  const subs=kids(root.id);
-  const allParents=[root,...subs,...nodes.filter(n=>n.level===2)];
-  if(sel&&sel.schedule)editSched={...sel.schedule,days:[...(sel.schedule.days||[])]};
-  const showSched=!sel||sel.level>=2;
-  const selPal=sel?nodePal(sel):null;
-  rs.innerHTML=`
-<div class="rsec">
-  <div class="rlbl">카테고리</div>
-  <button class="r-main-btn${selected===root.id?' sel':''}" onclick="selectNode(${root.id})">
-    <span class="r-main-dot" style="background:${root.customColors?.fill||'#1a1a18'}"></span><span>${root.text||'(제목 없음)'}</span>
-  </button>
-  ${subs.map(sub=>{const p=nodePal(sub);return`<button class="r-sub-btn${selected===sub.id?' sel':''}" onclick="selectNode(${sub.id})"><span class="r-sub-dot" style="background:${p.stroke}"></span><span style="color:${selected===sub.id?'inherit':p.text}">${sub.text||'(미입력)'}</span></button>${kids(sub.id).map(t=>{const tp=nodePal(t);return`<button class="r-task-btn${selected===t.id?' sel':''}" onclick="selectNode(${t.id})"><span class="r-task-pre">└</span><span class="r-task-dot" style="background:${tp.stroke}"></span><span style="color:${selected===t.id?'inherit':tp.text}">${t.text||'(미입력)'}</span></button>`;}).join('')}`;}).join('')}
-  ${sel&&(sel.level===0||sel.level===1)?`<div class="color-picker-box">
-    <div class="rslbl" style="margin-top:8px">색상 설정</div>
-    <div class="cprow"><label class="cplbl">배경</label><input type="color" class="cpinput" id="cp-fill" value="${sel.level===0?(sel.customColors?.fill||'#1a1a18'):(selPal.fill)}" oninput="previewColor('fill',this.value)"><span class="cpval" id="cpv-fill" onclick="copyHex(this)">${sel.level===0?(sel.customColors?.fill||'#1a1a18'):(selPal.fill)}</span></div>
-    <div class="cprow"><label class="cplbl">텍스트</label><input type="color" class="cpinput" id="cp-text" value="${sel.level===0?(sel.customColors?.text||'#ffffff'):(selPal.text)}" oninput="previewColor('text',this.value)"><span class="cpval" id="cpv-text" onclick="copyHex(this)">${sel.level===0?(sel.customColors?.text||'#ffffff'):(selPal.text)}</span></div>
-    ${sel.level===1?`<div class="cprow"><label class="cplbl">테두리</label><input type="color" class="cpinput" id="cp-stroke" value="${selPal.stroke}" oninput="previewColor('stroke',this.value)"><span class="cpval" id="cpv-stroke" onclick="copyHex(this)">${selPal.stroke}</span></div>`:''}
-    <div style="display:flex;gap:6px;margin-top:8px"><button class="rbtn" style="flex:1" onclick="applyColor()">✓ 적용</button><button class="rbtn" style="flex:1" onclick="resetColor()">↺ 초기화</button></div>
-  </div>`:''}
-</div>
-<hr class="rdiv">
-<div class="rsec">
-  <div class="rlbl">노드 추가</div>
-  <div class="rslbl">상위 노드</div>
-  <select class="rinput" id="n-pid">${allParents.map(n=>`<option value="${n.id}"${selected===n.id?' selected':''}>${'　'.repeat(n.level)}${n.text||'(미입력)'}</option>`).join('')}</select>
-  <div class="rslbl">이름</div>
-  <input class="rinput" id="n-txt" placeholder="새 항목 이름" />
-  ${schedUI('new',newSched)}
-  <div class="rslbl">메모 (선택)</div>
-  <textarea class="rtarea" id="n-memo" placeholder="예: 메모 내용"></textarea>
-  <button class="rbtn" onclick="addNode()">+ 추가</button>
-</div>
-<hr class="rdiv">
-<div class="rsec${sel?'':' dim'}">
-  <div class="rlbl">노드 편집</div>
-  <div class="rslbl">이름</div>
-  <input class="rinput" id="e-txt" value="${sel?sel.text:''}" placeholder="이름" />
-  ${showSched?schedUI('edit',sel&&sel.schedule?sel.schedule:editSched):'<p style="font-size:11px;color:var(--text-tertiary);margin:6px 0">메인·부메인은 시간 설정 없음</p>'}
-  <div class="rslbl">메모</div>
-  <textarea class="rtarea" id="e-memo" placeholder="메모...">${sel?sel.memo||'':''}</textarea>
-  <button class="rbtn" onclick="applyEdit()">✓ 수정 적용</button>
-  <button class="rbtn dan" onclick="deleteNode()">삭제</button>
-</div>
-<hr class="rdiv">
-<div class="rsec">
-  <button class="rbtn pri" onclick="openPrintPreview()">🖨 인쇄 미리보기</button>
-</div>`;
-}
-function addNode(){
-  const pid=parseInt(document.getElementById('n-pid').value)||1;
-  const txt=document.getElementById('n-txt').value.trim();if(!txt)return;
-  const memo=document.getElementById('n-memo').value.trim();
-  const parent=byId(pid),level=parent?parent.level+1:1;
-  const rc=level<=1?nodes.filter(n=>n.level===1).length%7:rootColor(parent);
-  saveHistory();
-  nodes.push({id:++seq,pid,text:txt,level,memo,color:rc,x:0,y:0,schedule:{...newSched,days:[...newSched.days]},customColors:null});
-  newSched=emptySchedule();
-  document.getElementById('n-txt').value='';document.getElementById('n-memo').value='';
-  render();
-}
-function applyEdit(){
-  if(!selected)return;saveHistory();const n=byId(selected);
-  n.text=document.getElementById('e-txt').value.trim();
-  n.memo=document.getElementById('e-memo').value.trim();
-  if(n.level>=2)n.schedule={...editSched,days:[...editSched.days]};
-  showToast('✓ 수정됐어요');render();
-}
-function deleteNode(){
-  if(!selected)return;
-  if(selected===1){showToast('⚠️ 메인 노드는 삭제할 수 없어요');return;}
-  saveHistory();
-  const rm=new Set([selected]);let changed=true;
-  while(changed){changed=false;nodes.forEach(n=>{if(rm.has(n.pid)&&!rm.has(n.id)){rm.add(n.id);changed=true;}});}
-  nodes=nodes.filter(n=>!rm.has(n.id));selected=null;
-  showToast('🗑 삭제됐어요  •  Ctrl+Z 로 되돌리기');render();
-}
-
-/* ── 인쇄 ── */
-function openPrintPreview(){
-  const isLandscape=mode==='expand';
-  const A4W=isLandscape?1123:794,A4H=isLandscape?794:1123;
-  const root=nodes.find(n=>n.level===0);if(!root)return;
-  let svgContent='';
-  if(mode==='expand'){
-    autoLayout();
-    const allN=nodes.filter(n=>n.x||n.y);
-    if(!allN.length)return;
-    const xs=allN.map(n=>n.x),ys=allN.map(n=>n.y);
-    const minX=Math.min(...xs)-90,maxX=Math.max(...xs)+90,minY=Math.min(...ys)-90,maxY=Math.max(...ys)+90;
-    const cW=maxX-minX,cH=maxY-minY;
-    const scale=Math.min((A4W-80)/cW,(A4H-80)/cH,1.5);
-    const offX=(A4W-cW*scale)/2-minX*scale,offY=(A4H-cH*scale)/2-minY*scale;
-    let edges='',nodesStr='';
-    function edgesFor(node){kids(node.id).forEach(c=>{const pal=nodePal(c);const mx=(node.x+c.x)/2,my=(node.y+c.y)/2,dx=c.x-node.x,dy=c.y-node.y,len=Math.sqrt(dx*dx+dy*dy)||1;const s=(c.id%2===0?1:-1),ox=(-dy/len)*s*len*.08,oy=(dx/len)*s*len*.08;edges+=`<path d="M${node.x} ${node.y} Q${mx+ox} ${my+oy} ${c.x} ${c.y}" fill="none" stroke="${pal.stroke}" stroke-width="${node.level===0?1.8:1.1}" opacity="${node.level===0?.45:.28}" stroke-linecap="round"/>`;edgesFor(c);});}
-    edgesFor(root);
-    function nodesFor(node){
-      if(node.level===0){const cc=node.customColors;nodesStr+=`<circle cx="${node.x}" cy="${node.y}" r="62" fill="${cc?.fill||'#1a1a18'}"/>`;node.text.split('\n').forEach((ln,i,a)=>{nodesStr+=`<text x="${node.x}" y="${node.y+(i-(a.length-1)/2)*20}" text-anchor="middle" dominant-baseline="central" fill="${cc?.text||'#fff'}" font-size="16" font-weight="600" font-family="sans-serif">${ln}</text>`;});return;}
-      const pal=nodePal(node),E=EL[node.level]||EL[3];
-      nodesStr+=`<ellipse cx="${node.x}" cy="${node.y}" rx="${E.rx}" ry="${E.ry}" fill="${pal.fill}" stroke="${pal.stroke}" stroke-width="1"/>`;
-      const fs=node.level===1?13:11;
-      node.text.split('\n').forEach((ln,i,a)=>{nodesStr+=`<text x="${node.x}" y="${node.y+(i-(a.length-1)/2)*(fs+2)}" text-anchor="middle" dominant-baseline="central" fill="${pal.text}" font-size="${fs}" font-weight="600" font-family="sans-serif">${ln}</text>`;});
-      kids(node.id).forEach(c=>nodesFor(c));
-    }
-    nodes.filter(n=>n.level>0).forEach(n=>nodesFor(n));nodesFor(root);
-    svgContent=`<g transform="translate(${offX},${offY}) scale(${scale})">${edges}${nodesStr}</g>`;
-  }else if(mode==='list'){
-    let y=60,out='';
-    out+=`<text x="${A4W/2}" y="${y}" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1a18" font-family="sans-serif">${root.text||''}</text>`;y+=38;
-    out+=`<line x1="50" y1="${y}" x2="${A4W-50}" y2="${y}" stroke="#ccc9c0" stroke-width="1"/>`;y+=22;
-    kids(root.id).forEach(sub=>{
-      const pal=nodePal(sub);
-      out+=`<rect x="50" y="${y-2}" width="${A4W-100}" height="28" rx="6" fill="${pal.fill}" stroke="${pal.stroke}" stroke-width="0.8"/>`;
-      out+=`<text x="63" y="${y+13}" fill="${pal.text}" font-size="14" font-weight="600" dominant-baseline="central" font-family="sans-serif">${sub.text||''}</text>`;y+=36;
-      kids(sub.id).forEach(task=>{
-        const tp=nodePal(task);
-        out+=`<text x="74" y="${y+8}" fill="${tp.text}" font-size="12" font-weight="500" dominant-baseline="central" font-family="sans-serif">· ${task.text||''}</text>`;
-        const lbl=schedLabel(task.schedule);if(lbl){out+=`<text x="${A4W-60}" y="${y+8}" fill="${tp.text}" font-size="10" text-anchor="end" dominant-baseline="central" opacity=".75" font-family="sans-serif">${lbl}</text>`;}
-        y+=22;if(task.memo){task.memo.split('/').forEach(m=>{out+=`<text x="90" y="${y+5}" fill="#999890" font-size="10" dominant-baseline="central" font-family="sans-serif">→ ${m.trim()}</text>`;y+=17;});}y+=4;
-      });y+=10;
-    });
-    svgContent=out;
-  }else{
-    const H_START=6,H_END=24,padL=46,padT=48,colW=Math.floor((A4W-padL)/7),gridH=A4H-padT-80,hPx=gridH/(H_END-H_START);
-    let out=`<text x="${A4W/2}" y="28" text-anchor="middle" font-size="16" font-weight="700" fill="#1a1a18" font-family="sans-serif">${root.text||''} — 주간 스케줄</text>`;
-    DAYS_KO.forEach((d,i)=>{const x=padL+i*colW+colW/2;out+=`<text x="${x}" y="${padT-10}" text-anchor="middle" font-size="11" font-weight="600" fill="#555550" font-family="sans-serif">${d}</text><rect x="${padL+i*colW+1}" y="${padT}" width="${colW-2}" height="${gridH}" rx="4" fill="${i>=5?'#f7f6f3':'#ffffff'}" stroke="#e2dfd8" stroke-width="0.8"/>`;});
-    for(let h=H_START;h<=H_END;h+=2){const y=padT+(h-H_START)*hPx;out+=`<text x="${padL-5}" y="${y}" text-anchor="end" dominant-baseline="central" fill="#999890" font-size="8" font-family="sans-serif">${String(h).padStart(2,'0')}:00</text>`;if(h>H_START)out+=`<line x1="${padL}" y1="${y}" x2="${A4W}" y2="${y}" stroke="#e2dfd8" stroke-width="0.5" stroke-dasharray="${h%6===0?'':'3,3'}"/>`;}
-    const cc=Array.from({length:7},()=>[]);
-    nodes.filter(n=>n.level===2&&n.schedule&&n.schedule.enabled&&n.schedule.type!=='monthly').forEach(task=>{
-      const pal=nodePal(task),s=task.schedule,dd=schedToDays(s);
-      dd.forEach(di=>{const sh=Math.max(s.startHour,H_START),eh=Math.min(s.startHour+(s.duration||1),H_END),y=padT+(sh-H_START)*hPx,bh=(eh-sh)*hPx-2,overlap=cc[di].filter(b=>b.sh<eh&&b.eh>sh).length,bw=Math.max(colW-10-overlap*4,20),bx=padL+di*colW+3+overlap*4;cc[di].push({sh,eh});out+=`<rect x="${bx}" y="${y}" width="${bw}" height="${Math.max(bh,14)}" rx="4" fill="${pal.fill}" stroke="${pal.stroke}" stroke-width="0.7"/><text x="${bx+5}" y="${y+Math.max(bh,14)/2}" dominant-baseline="central" fill="${pal.text}" font-size="9" font-weight="500" font-family="sans-serif">${task.text.length>7?task.text.slice(0,6)+'…':task.text}</text>`;});
-    });
-    svgContent=out;
-  }
-  const existing=document.getElementById('print-modal');if(existing)existing.remove();
-  const modal=document.createElement('div');modal.id='print-modal';
-  modal.innerHTML=`<div id="print-backdrop" onclick="closePrintPreview()"></div><div id="print-sheet-wrap"><div id="print-toolbar"><span id="print-title">인쇄 미리보기 — ${mode==='expand'?'확장형 (가로)':mode==='list'?'리스트형':'스케줄 모드'}</span><div style="display:flex;gap:8px"><button class="ptbtn" onclick="closePrintPreview()">닫기</button><button class="ptbtn pri" onclick="doPrint(${isLandscape})">🖨 인쇄</button></div></div><div id="print-scroll"><div id="print-a4"><svg id="print-svg" xmlns="http://www.w3.org/2000/svg" width="${A4W}" height="${A4H}" viewBox="0 0 ${A4W} ${A4H}"><rect width="${A4W}" height="${A4H}" fill="white"/>${svgContent}</svg></div></div></div>`;
-  document.body.appendChild(modal);
-}
-function closePrintPreview(){const m=document.getElementById('print-modal');if(m)m.remove();}
-function doPrint(landscape){
-  const svg=document.getElementById('print-svg');if(!svg)return;
-  const svgStr=new XMLSerializer().serializeToString(svg);
-  const win=window.open('','_blank','width=1000,height=800');
-  const w=landscape?'297mm':'210mm',h=landscape?'210mm':'297mm';
-  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>@page{size:${landscape?'A4 landscape':'A4'};margin:0;}body{margin:0;padding:0;}img{width:${w};height:${h};display:block;}</style></head><body>`);
-  const blob=new Blob([svgStr],{type:'image/svg+xml;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  win.document.write(`<img src="${url}" onload="window.print();URL.revokeObjectURL('${url}')"/>`);
-  win.document.write('</body></html>');win.document.close();
 }
 
 /* ── 렌더 ── */
@@ -948,28 +399,786 @@ function render(){
   if(mode==='expand')renderExpand();
   else if(mode==='list')renderList();
   else renderSched();
-  renderLeft();renderRight();
+  renderLeft(); renderRight();
   document.getElementById('sched-overlay').classList.toggle('visible',mode==='sched');
   renderMonthlyBar();
 }
-function setMode(m){
-  mode=m;selected=null;cancelInlineEdit();
-  ['expand','list','sched'].forEach(x=>document.getElementById('mb-'+x).classList.toggle('act',x===m));
+
+/* ── 확장형 ── */
+function renderExpand(){
+  sv.innerHTML=''; autoLayout();
+  function drawTree(node){ kids(node.id).forEach(c=>{ const pal=nodePal(c); drawCurve(node.x,node.y,c.x,c.y,pal.stroke,node.level===0?1.8:1.1,node.level===0?.45:.28,c.id); drawTree(c); drawNodeEl(c); }); }
+  drawTree(nodes.find(n=>n.level===0));
+  drawCenter(nodes.find(n=>n.level===0));
+}
+function drawCurve(x1,y1,x2,y2,color,sw,op,seed){
+  const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1,len=Math.sqrt(dx*dx+dy*dy)||1;
+  const s=(seed%2===0?1:-1),ox=(-dy/len)*s*len*.09,oy=(dx/len)*s*len*.09;
+  sv.appendChild(mkEl('path',{d:`M${x1} ${y1} Q${mx+ox} ${my+oy} ${x2} ${y2}`,fill:'none',stroke:color,'stroke-width':sw,opacity:op,'stroke-linecap':'round'}));
+}
+function drawCenter(n){
+  const cc=n.customColors;
+  const bg=cc&&cc.fill?cc.fill:'#1a1a18';
+  const tc=cc&&cc.text?cc.text:'#ffffff';
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  g.appendChild(mkEl('circle',{cx:n.x,cy:n.y,r:62,fill:bg}));
+  n.text.split('\n').forEach((ln,i,a)=>{ const t=mkEl('text',{x:n.x,y:n.y+(i-(a.length-1)/2)*20,'text-anchor':'middle','dominant-baseline':'central',fill:tc,'font-size':'16','font-weight':'600'}); t.textContent=ln; g.appendChild(t); });
+  sv.appendChild(g);
+  g.style.cursor='default';
+  let dcTimer=null;
+  g.addEventListener('click',()=>{ clearTimeout(dcTimer); dcTimer=setTimeout(()=>{dcTimer=null;},280); selectNode(n.id); });
+  g.addEventListener('dblclick',()=>{ clearTimeout(dcTimer); openInlineEditor(n); });
+}
+function drawNodeEl(n){
+  const pal=nodePal(n),E=EL[n.level]||EL[3],rx=E.rx,ry=E.ry,isSel=selected===n.id;
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g'); g.style.cursor='grab';
+  g.appendChild(mkEl('ellipse',{cx:n.x,cy:n.y,rx,ry,fill:isSel?pal.stroke:pal.fill,stroke:pal.stroke,'stroke-width':isSel?0:1}));
+  const fs=n.level===1?13:n.level===2?11:9;
+  n.text.split('\n').forEach((ln,i,a)=>{ const t=mkEl('text',{x:n.x,y:n.y+(i-(a.length-1)/2)*(fs+2),'text-anchor':'middle','dominant-baseline':'central',fill:isSel?'#fff':pal.text,'font-size':fs,'font-weight':'600'}); t.textContent=ln; g.appendChild(t); });
+  const topY=n.y-ry;
+  const lbl=schedLabel(n.schedule);
+  if(lbl){ const ft=mkEl('text',{x:n.x,y:topY-13,'text-anchor':'middle','dominant-baseline':'central',fill:pal.stroke,'font-size':'9'}); ft.textContent=lbl; g.appendChild(ft); }
+  if(n.memo){ n.memo.split('/').map(s=>s.trim()).forEach((ml,mi,arr)=>{ const mx2=n.x+rx+8,my2=n.y+(mi-(arr.length-1)/2)*17,mw=Math.min(ml.length*7+14,130),mh=15; sv.appendChild(mkEl('rect',{x:mx2,y:my2-mh/2,width:mw,height:mh,rx:'5',fill:pal.fill,stroke:pal.stroke,'stroke-width':'0.5'})); const mt=mkEl('text',{x:mx2+6,y:my2,'dominant-baseline':'central',fill:pal.text,'font-size':'9'}); mt.textContent=ml.length>16?ml.slice(0,15)+'…':ml; sv.appendChild(mt); }); }
+
+  /* 드래그 */
+  g.addEventListener('mousedown',e=>startDrag(e,n));
+  /* 더블클릭 인라인 편집 */
+  g.addEventListener('dblclick',e=>{ e.stopPropagation(); openInlineEditor(n); });
+  /* 싱글 클릭 선택 */
+  g.addEventListener('click',()=>{ if(!didDrag)selectNode(n.id); });
+  sv.appendChild(g);
+}
+
+/* ── 뷰 초기화 ── */
+function resetView(){ vx=0; vy=0; vscale=1; nodes.forEach(n=>n._dragged=false); render(); }
+
+/* ── 노디 이동 정리 — 겹치지 않게 배치 ── */
+function nodiArrange(){
+  const root=nodes.find(n=>n.level===0); if(!root)return;
+  const subs=kids(root.id); const N=subs.length; if(!N)return;
+
+  /* 부메인 반경: 메인(62) + 부메인 rx(54) + 여유 */
+  const subR = 62 + 54 + 50;
+  /* 부메인 간 최소 간격: 부메인 rx*2 + 여유 */
+  const subMinGap = 54*2 + 30;
+  /* 실제 필요 반경 계산 (원주 기반) */
+  const circumNeeded = N * subMinGap;
+  const radiusNeeded = circumNeeded / (2 * Math.PI);
+  const finalSubR = Math.max(subR, radiusNeeded);
+
+  subs.forEach((sub, i) => {
+    const a = (i / N) * Math.PI * 2 - Math.PI / 2;
+    sub.x = root.x + Math.cos(a) * finalSubR;
+    sub.y = root.y + Math.sin(a) * finalSubR;
+    sub._dragged = true;
+
+    const tasks = kids(sub.id); const T = tasks.length; if(!T) return;
+    /* 하위 노드: 부메인(ry:28) + 하위(ry:20) + 여유 */
+    const taskR = 28 + 20 + 45;
+    const taskMinGap = 38*2 + 20;
+    const taskCircumNeeded = T * taskMinGap;
+    const taskRadiusNeeded = taskCircumNeeded / (2 * Math.PI);
+    const finalTaskR = Math.max(taskR, taskRadiusNeeded);
+    /* 부채꼴 방향으로 펼치되 겹치지 않게 */
+    const fanSpan = Math.min(Math.PI * 1.2, T * 0.55);
+    tasks.forEach((task, ti) => {
+      const ta = a + (ti - (T-1)/2) * (T > 1 ? fanSpan/(T-1) : 0);
+      task.x = sub.x + Math.cos(ta) * finalTaskR;
+      task.y = sub.y + Math.sin(ta) * finalTaskR;
+      task._dragged = true;
+    });
+  });
+  showToast('🔵 노디가 정리했어요');
+  renderExpand();
+}
+function openInlineEditor(n){
+  cancelInlineEdit();
+  inlineNodeId=n.id;
+  const editor=document.getElementById('inline-editor');
+  const input=document.getElementById('inline-input');
+  input.value=n.text.replace('\n',' ');
+  /* 노드 화면 위치: 캔버스 좌표 → 화면 좌표 (pan/zoom 반영) */
+  const E=EL[n.level]||EL[3];
+  const sx = n.x * vscale + vx;
+  const sy = (n.y - E.ry) * vscale + vy - 10;
+  editor.style.left = sx + 'px';
+  editor.style.top  = sy + 'px';
+  editor.style.transform = 'translateX(-50%)';
+  editor.classList.add('visible');
+  input.focus(); input.select();
+}
+function confirmInlineEdit(){
+  if(!inlineNodeId)return;
+  const n=byId(inlineNodeId);
+  const val=document.getElementById('inline-input').value.trim();
+  if(val&&val!==n.text.replace('\n',' ')){
+    saveHistory();
+    n.text=val;
+    showToast('✓ 수정됐어요');
+  }
+  cancelInlineEdit();
+  render();
+}
+function cancelInlineEdit(){
+  inlineNodeId=null;
+  document.getElementById('inline-editor').classList.remove('visible');
+}
+document.getElementById('inline-input').addEventListener('keydown',e=>{
+  if(e.key==='Escape') cancelInlineEdit();
+});
+
+/* ── 드래그 ── */
+function clientToCanvas(cx,cy){
+  const rect=document.getElementById('center').getBoundingClientRect();
+  return{x:(cx-rect.left-vx)/vscale, y:(cy-rect.top-vy)/vscale};
+}
+function startDrag(e,n){
+  didDrag=false; dragNode=n;
+  const p=e.touches?{x:e.touches[0].clientX,y:e.touches[0].clientY}:{x:e.clientX,y:e.clientY};
+  const cp=clientToCanvas(p.x,p.y);
+  dragOX=cp.x-n.x; dragOY=cp.y-n.y;
+  e.stopPropagation();
+  if(e.type==='mousedown') e.preventDefault();
+}
+function moveDrag(cx,cy){
+  if(!dragNode||mode!=='expand')return;
+  didDrag=true;
+  const cp=clientToCanvas(cx,cy);
+  const nx=cp.x-dragOX, ny=cp.y-dragOY;
+  const dx=nx-dragNode.x, dy=ny-dragNode.y;
+  dragNode.x=nx; dragNode.y=ny; dragNode._dragged=true;
+  if(dragNode.level===1) getSubtreeOffsets(dragNode,dx,dy);
+  renderExpand();
+}
+document.addEventListener('mousemove',e=>{
+  if(dragNode){ moveDrag(e.clientX,e.clientY); return; }
+  if(!isPanning||mode!=='expand')return;
+  vx+=e.clientX-panLast.x; vy+=e.clientY-panLast.y;
+  panLast={x:e.clientX,y:e.clientY};
+  const g=document.getElementById('mm-world');
+  if(g)g.setAttribute('transform',`translate(${vx},${vy}) scale(${vscale})`);
+});
+document.addEventListener('mouseup',()=>{ dragNode=null; isPanning=false; });
+
+/* ── 선택 ── */
+function selectNode(id){
+  selected=id; pendingColors={};
+  const n=byId(id);
+  if(n&&n.schedule) editSched={...n.schedule, days:[...(n.schedule.days||[])]};
+  else editSched=emptySchedule();
   render();
 }
 
-/* ── 자동 저장 ── */
-const AUTO_SAVE_MS=10*60*1000;
-function autoSave(){
-  const data={nodes:JSON.parse(JSON.stringify(nodes)),seq,vx,vy,vscale,savedAt:Date.now()};
-  try{localStorage.setItem(AUTO_KEY,JSON.stringify(data));const el=document.getElementById('autosave-indicator');if(el){const t=new Date();el.textContent='● 자동저장 '+String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0');el.style.opacity='1';setTimeout(()=>{el.style.opacity='0.45';},2000);}}catch(e){}
+/* ── 리스트형 ── */
+function renderList(){
+  sv.innerHTML=''; const W=cw(),px=56; let y=50;
+  const root=nodes.find(n=>n.level===0);
+  const title=mkEl('text',{x:W/2,y,fill:'#1a1a18','text-anchor':'middle','font-size':'18','font-weight':'700','dominant-baseline':'central'}); title.textContent=root.text.replace('\n',' '); sv.appendChild(title); y+=40;
+  sv.appendChild(mkEl('line',{x1:px,y1:y,x2:W-px,y2:y,stroke:'#e2dfd8','stroke-width':'1'})); y+=22;
+  kids(root.id).forEach(sub=>{
+    const pal=nodePal(sub);
+    sv.appendChild(mkEl('rect',{x:px,y:y-2,width:W-px*2,height:28,rx:'6',fill:pal.fill,stroke:pal.stroke,'stroke-width':'0.8'}));
+    const sl=mkEl('text',{x:px+13,y:y+13,fill:pal.text,'font-size':'13','font-weight':'600','dominant-baseline':'central'}); sl.textContent=sub.text.replace('\n',' '); sv.appendChild(sl); y+=36;
+    kids(sub.id).forEach(task=>{
+      const tp=nodePal(task);
+      const tl=mkEl('text',{x:px+22,y:y+7,fill:tp.text,'font-size':'12','dominant-baseline':'central','font-weight':'500'}); tl.textContent='· '+task.text.replace('\n',' '); sv.appendChild(tl);
+      const lbl=schedLabel(task.schedule);
+      if(lbl){ const fl=mkEl('text',{x:W-px-10,y:y+7,fill:tp.text,'font-size':'10','dominant-baseline':'central','text-anchor':'end',opacity:'.75'}); fl.textContent=lbl; sv.appendChild(fl); }
+      y+=22;
+      if(task.memo){ task.memo.split('/').forEach(m=>{ const ml=mkEl('text',{x:px+36,y:y+5,fill:'#999890','font-size':'10','dominant-baseline':'central'}); ml.textContent='→ '+m.trim(); sv.appendChild(ml); y+=17; }); }
+      y+=4;
+    }); y+=8;
+  });
 }
-setInterval(autoSave,AUTO_SAVE_MS);
 
+/* ── 스케줄 모드 ── */
+function renderSched(){
+  sv.innerHTML='';
+  const W=cw(), H=ch();
+  const H_START=6, H_END=24, H_TOTAL=H_END-H_START;
+  const padL=42, padT=28, colW=Math.floor((W-padL)/7), gridH=H-padT-6;
+  const hPx=gridH/H_TOTAL;
+
+  DAYS_KO.forEach((d,i)=>{
+    const x=padL+i*colW+colW/2;
+    const hdr=mkEl('text',{x,y:14,'text-anchor':'middle','dominant-baseline':'central',fill:'#555550','font-size':'11','font-weight':'600'}); hdr.textContent=d; sv.appendChild(hdr);
+    sv.appendChild(mkEl('rect',{x:padL+i*colW+1,y:padT,width:colW-2,height:gridH,rx:'4',fill:i>=5?'#f7f6f3':'#ffffff',stroke:'#e2dfd8','stroke-width':'0.8'}));
+  });
+  for(let h=H_START;h<=H_END;h+=2){
+    const y=padT+(h-H_START)*hPx;
+    const sl=mkEl('text',{x:padL-5,y,'text-anchor':'end','dominant-baseline':'central',fill:'#999890','font-size':'9'}); sl.textContent=`${String(h).padStart(2,'0')}:00`; sv.appendChild(sl);
+    if(h>H_START) sv.appendChild(mkEl('line',{x1:padL,y1:y,x2:W,y2:y,stroke:'#e2dfd8','stroke-width':'0.5','stroke-dasharray':h%6===0?'':'3,3'}));
+  }
+  const colStack=Array.from({length:7},()=>[]);
+  nodes.filter(n=>n.level>=1&&n.schedule&&n.schedule.enabled&&n.schedule.type!=='monthly').forEach(task=>{
+    const pal=nodePal(task), s=task.schedule, dd=schedToDays(s);
+    dd.forEach(di=>{
+      const sh=Math.max(s.startHour,H_START), eh=Math.min(s.startHour+(s.duration||1),H_END);
+      const y=padT+(sh-H_START)*hPx, bh=(eh-sh)*hPx-2;
+      const overlap=colStack[di].filter(b=>b.sh<eh&&b.eh>sh).length;
+      const bw=Math.max(colW-10-overlap*4,20), bx=padL+di*colW+3+overlap*4;
+      colStack[di].push({sh,eh});
+      sv.appendChild(mkEl('rect',{x:bx,y,width:bw,height:Math.max(bh,14),rx:'4',fill:pal.fill,stroke:pal.stroke,'stroke-width':'0.7'}));
+      const bt=mkEl('text',{x:bx+5,y:y+Math.max(bh,14)/2,'dominant-baseline':'central',fill:pal.text,'font-size':'9.5','font-weight':'500'}); bt.textContent=task.text.length>7?task.text.slice(0,6)+'…':task.text; sv.appendChild(bt);
+      if(bh>24){ const td=mkEl('text',{x:bx+5,y:y+Math.max(bh,14)/2+12,'dominant-baseline':'central',fill:pal.text,'font-size':'8.5',opacity:'0.7'}); td.textContent=`${String(sh).padStart(2,'0')}:00`; sv.appendChild(td); }
+    });
+  });
+}
+
+function renderMonthlyBar(){
+  const bar=document.getElementById('monthly-bar'), items=document.getElementById('monthly-items');
+  if(mode!=='sched'||monthlyPos==='hide'){ bar.classList.remove('visible'); return; }
+  const monthly=nodes.filter(n=>n.level>=1&&n.schedule&&n.schedule.enabled&&n.schedule.type==='monthly');
+  if(!monthly.length){ bar.classList.remove('visible'); return; }
+  bar.classList.add('visible'); items.innerHTML='';
+  monthly.forEach(task=>{
+    const pal=nodePal(task);
+    const chip=document.createElement('div'); chip.className='mb-chip';
+    chip.style.cssText=`border-color:${pal.stroke};color:${pal.text};background:${pal.fill}`;
+    chip.innerHTML=`<span style="width:6px;height:6px;border-radius:50%;background:${pal.stroke};flex-shrink:0;display:inline-block"></span>${task.text.replace('\n',' ')}<span style="opacity:.7;font-size:10px">${schedLabel(task.schedule)}</span>`;
+    items.appendChild(chip);
+  });
+  if(monthlyPos==='top'){ bar.style.order='-1'; bar.style.borderTop='none'; bar.style.borderBottom='1px solid var(--border-light)'; }
+  else { bar.style.order=''; bar.style.borderTop='1px solid var(--border-light)'; bar.style.borderBottom='none'; }
+}
+function setMonthlyPos(pos){ monthlyPos=pos; ['bottom','top','hide'].forEach(p=>document.getElementById('sov-'+p).classList.toggle('on',p===pos)); renderMonthlyBar(); }
+
+/* ── 좌측 리스트 ── */
+/* ── 좌측 리스트 드래그 상태 ── */
+let listDrag = { active:false, nodeId:null, level:null, ghost:null, overEl:null };
+
+function renderLeft(){
+  const area = document.getElementById('lscroll'); area.innerHTML = '';
+  const root = nodes.find(n=>n.level===0);
+  const subs = kids(root.id);
+
+  /* ── 부메인 섹션 (드래그 가능) ── */
+  subs.forEach(sub=>{
+    const pal = nodePal(sub);
+    const section = document.createElement('div');
+    section.className = 'lsection';
+    section.dataset.id = sub.id;
+
+    /* 부메인 헤더 — 드래그 핸들 포함 */
+    const header = document.createElement('div');
+    header.className = 'lsec-row';
+    header.innerHTML = `
+      <span class="ldrag-handle" title="드래그해서 순서 변경">⠿</span>
+      <span class="lsec-lbl" style="color:${pal.text};margin:0;flex:1">${sub.text.replace('\n',' ')}</span>`;
+    header.draggable = true;
+    header.addEventListener('dragstart', e=>startListDrag(e, sub.id, 1, section));
+    header.addEventListener('dragend',   ()=>endListDrag());
+    section.addEventListener('dragover',  e=>onListDragOver(e, sub.id, 1, section));
+    section.addEventListener('drop',      e=>onListDrop(e, sub.id, 1));
+    section.appendChild(header);
+
+    /* 할일 목록 */
+    const taskList = document.createElement('div');
+    taskList.className = 'ltask-list';
+    taskList.dataset.parentId = sub.id;
+
+    kids(sub.id).forEach(task=>{
+      const tp = nodePal(task);
+      const it = document.createElement('div');
+      it.className = 'litem' + (selected===task.id?' sel':'');
+      it.dataset.id = task.id;
+      it.draggable = true;
+      it.innerHTML = `
+        <span class="ldrag-handle" title="드래그해서 순서 변경">⠿</span>
+        <span class="ldot" style="background:${tp.stroke}"></span>
+        <div style="flex:1">
+          <div class="ltext">${task.text.replace('\n',' ')}</div>
+          <div class="lbadge">${schedLabel(task.schedule)||'일정 없음'}</div>
+          ${task.memo?`<div class="lbadge" style="font-style:italic">${task.memo.replace(/\//g,', ')}</div>`:''}
+        </div>`;
+      it.addEventListener('click', ()=>selectNode(task.id));
+      it.addEventListener('dragstart', e=>startListDrag(e, task.id, 2, it));
+      it.addEventListener('dragend',   ()=>endListDrag());
+      it.addEventListener('dragover',  e=>onListDragOver(e, task.id, 2, it));
+      it.addEventListener('drop',      e=>onListDrop(e, task.id, 2));
+      taskList.appendChild(it);
+    });
+
+    /* 빈 taskList도 drop 대상 */
+    taskList.addEventListener('dragover', e=>{ if(listDrag.level===2) e.preventDefault(); });
+    taskList.addEventListener('drop',     e=>{ if(listDrag.level===2){ e.preventDefault(); onListDrop(e, null, 2, sub.id); } });
+    section.appendChild(taskList);
+    area.appendChild(section);
+  });
+}
+
+function startListDrag(e, nodeId, level, el){
+  listDrag.active = true; listDrag.nodeId = nodeId; listDrag.level = level;
+  e.dataTransfer.effectAllowed = 'move';
+  el.style.opacity = '0.45';
+  listDrag.srcEl = el;
+}
+function endListDrag(){
+  if(listDrag.srcEl) listDrag.srcEl.style.opacity = '';
+  document.querySelectorAll('.ldrop-line').forEach(e=>e.classList.remove('ldrop-line'));
+  listDrag = {active:false, nodeId:null, level:null, ghost:null, overEl:null, srcEl:null};
+}
+function onListDragOver(e, overId, level, el){
+  if(!listDrag.active || listDrag.level !== level) return;
+  if(listDrag.nodeId === overId) return;
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.ldrop-line').forEach(x=>x.classList.remove('ldrop-line'));
+  /* 마우스가 요소 위쪽이면 위에, 아래면 아래에 인디케이터 */
+  const rect = el.getBoundingClientRect();
+  const mid  = rect.top + rect.height/2;
+  el.classList.add('ldrop-line');
+  listDrag.dropBefore = e.clientY < mid;
+  listDrag.overNodeId = overId;
+}
+function onListDrop(e, overId, level, fallbackParentId){
+  e.preventDefault();
+  if(!listDrag.active || listDrag.level !== level) return;
+  const dragId = listDrag.nodeId;
+  if(dragId === overId) return;
+  saveHistory();
+
+  if(level===1){
+    /* 부메인 순서 교환 */
+    const root = nodes.find(n=>n.level===0);
+    const subs = kids(root.id);
+    const ai = subs.findIndex(n=>n.id===dragId);
+    const bi = subs.findIndex(n=>n.id===overId);
+    if(ai<0||bi<0)return;
+    /* nodes 배열에서 두 위치를 swap */
+    const aIdx = nodes.indexOf(subs[ai]);
+    const bIdx = nodes.indexOf(subs[bi]);
+    [nodes[aIdx], nodes[bIdx]] = [nodes[bIdx], nodes[aIdx]];
+  } else {
+    /* 할일 순서 재배치 */
+    const dragNode2 = byId(dragId);
+    if(!dragNode2) return;
+    if(overId === null){
+      /* 빈 섹션에 drop — parentId 변경 */
+      if(fallbackParentId) dragNode2.pid = fallbackParentId;
+    } else {
+      const overNode = byId(overId);
+      if(!overNode) return;
+      /* 같은 부모인지 아닌지 무관하게 위치 재배치 */
+      const di = nodes.indexOf(dragNode2);
+      const oi = nodes.indexOf(overNode);
+      nodes.splice(di,1);
+      const newOi = nodes.indexOf(overNode);
+      const insertAt = listDrag.dropBefore ? newOi : newOi+1;
+      nodes.splice(insertAt,0,dragNode2);
+      /* 부모도 맞춰줌 */
+      dragNode2.pid = overNode.pid;
+    }
+  }
+  render();
+}
+
+/* ── 스케줄 UI 빌더 ── */
+function schedUI(prefix, sched){
+  const enabled=sched&&sched.enabled;
+  const s=enabled?sched:{type:'daily',days:[],startHour:9,duration:1,monthlyCount:1};
+  const mc=s.monthlyCount||1;
+  const types=[
+    {v:'daily',l:'매일'},{v:'weekdays',l:'평일'},{v:'weekend',l:'주말'},
+    {v:'weekly',l:'요일지정'},{v:'biweekly',l:'격주'},{v:'monthly',l:'매월'}
+  ];
+  const hours=Array.from({length:24},(_,i)=>`<option value="${i}"${s.startHour===i?' selected':''}>${String(i).padStart(2,'0')}:00</option>`).join('');
+  const durs=[1,2,3,4].map(d=>`<option value="${d}"${(s.duration||1)===d?' selected':''}>${d}시간</option>`).join('');
+  const dayBtns=DAYS_KO.map((d,i)=>`<button class="dpill${(s.days||[]).includes(i)?' on':''}" onclick="toggleSchedDay('${prefix}',${i})">${d}</button>`).join('');
+  const showDays=(s.type==='weekly'||s.type==='biweekly')?'':'display:none';
+  const showMonthly=s.type==='monthly'?'':'display:none';
+
+  return `
+<div class="sched-toggle-row" onclick="toggleSchedEnabled('${prefix}')">
+  <div class="toggle-track${enabled?' on':''}"><div class="toggle-thumb"></div></div>
+  <span class="toggle-label">타임블록 설정</span>
+</div>
+<div class="sched-body${enabled?'':' hidden'}" id="${prefix}-sched-body">
+  <div class="sched-slbl">반복 주기</div>
+  <div class="freq-pills" id="${prefix}-type-pills">
+    ${types.map(t=>`<button class="fpill${s.type===t.v?' on':''}" onclick="setSchedType('${prefix}','${t.v}')">${t.l}</button>`).join('')}
+  </div>
+  <div id="${prefix}-day-wrap" style="${showDays}">
+    <div class="sched-slbl">요일</div>
+    <div class="day-pills" id="${prefix}-days">${dayBtns}</div>
+  </div>
+  <div id="${prefix}-monthly-wrap" style="${showMonthly}">
+    <div class="sched-slbl">월 횟수</div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <input type="number" min="1" max="31" value="${mc}" class="rinput" style="width:60px;height:28px;font-size:12px;margin:0"
+        onchange="setMonthlyCount('${prefix}',this.value)">
+      <span style="font-size:11px;color:var(--text-secondary)">회 / 월</span>
+    </div>
+  </div>
+  <div class="time-row">
+    <select onchange="setSchedHour('${prefix}',this.value)">${hours}</select>
+    <span class="time-sep">+</span>
+    <select onchange="setSchedDur('${prefix}',this.value)">${durs}</select>
+  </div>
+</div>`;
+}
+
+function toggleSchedEnabled(prefix){
+  const s=prefix==='new'?newSched:editSched;
+  s.enabled=!s.enabled;
+  const body=document.getElementById(`${prefix}-sched-body`);
+  const track=body&&body.previousElementSibling?body.previousElementSibling.querySelector('.toggle-track'):null;
+  if(body) body.classList.toggle('hidden',!s.enabled);
+  if(track) track.classList.toggle('on',s.enabled);
+}
+function setSchedType(prefix,val){
+  const s=prefix==='new'?newSched:editSched; s.type=val;
+  if(val==='weekdays') s.days=[0,1,2,3,4];
+  else if(val==='weekend') s.days=[5,6];
+  else if(val==='daily') s.days=[];
+  const labels={daily:'매일',weekdays:'평일',weekend:'주말',weekly:'요일지정',biweekly:'격주',monthly:'매월'};
+  document.querySelectorAll(`#${prefix}-type-pills .fpill`).forEach(b=>b.classList.toggle('on',b.textContent.trim()===labels[val]));
+  const dw=document.getElementById(`${prefix}-day-wrap`);
+  if(dw) dw.style.display=(val==='weekly'||val==='biweekly')?'':'none';
+  const mw=document.getElementById(`${prefix}-monthly-wrap`);
+  if(mw) mw.style.display=val==='monthly'?'':'none';
+}
+function toggleSchedDay(prefix,idx){
+  const s=prefix==='new'?newSched:editSched;
+  const i=s.days.indexOf(idx); if(i>=0) s.days.splice(i,1); else s.days.push(idx); s.days.sort((a,b)=>a-b);
+  document.querySelectorAll(`#${prefix}-days .dpill`).forEach((b,i)=>b.classList.toggle('on',s.days.includes(i)));
+}
+function setSchedHour(prefix,v){ (prefix==='new'?newSched:editSched).startHour=parseInt(v); }
+function setSchedDur(prefix,v){ (prefix==='new'?newSched:editSched).duration=parseInt(v); }
+function setMonthlyCount(prefix,v){ (prefix==='new'?newSched:editSched).monthlyCount=Math.max(1,parseInt(v)||1); }
+
+/* ── 우측 패널 ── */
+function renderRight(){
+  const rs=document.getElementById('rscroll');
+  const sel=selected?byId(selected):null;
+  const root=nodes.find(n=>n.level===0); if(!root){rs.innerHTML='';return;}
+  const subs=kids(root.id);
+  if(sel&&sel.schedule) editSched={...sel.schedule,days:[...(sel.schedule.days||[])]};
+  const selPal=sel?nodePal(sel):null;
+  const showSched=sel&&sel.level>=1;
+
+  /* ── 카테고리 트리 ── */
+  const catTree=`
+<div class="rsec">
+  <div class="rlbl">카테고리</div>
+  <button class="r-main-btn${selected===root.id?' sel':''}" onclick="selectNode(${root.id})">
+    <span class="r-main-dot" style="background:${root.customColors?.fill||'#1a1a18'}"></span>
+    <span>${root.text||'(제목 없음)'}</span>
+  </button>
+  ${subs.map(sub=>{const p=nodePal(sub);return`
+  <button class="r-sub-btn${selected===sub.id?' sel':''}" onclick="selectNode(${sub.id})">
+    <span class="r-sub-dot" style="background:${p.stroke}"></span>
+    <span style="color:${selected===sub.id?'inherit':p.text}">${sub.text||'(미입력)'}</span>
+  </button>
+  ${kids(sub.id).map(t=>{const tp=nodePal(t);return`<button class="r-task-btn${selected===t.id?' sel':''}" onclick="selectNode(${t.id})"><span class="r-task-pre">└</span><span class="r-task-dot" style="background:${tp.stroke}"></span><span style="color:${selected===t.id?'inherit':tp.text}">${t.text||'(미입력)'}</span></button>`;}).join('')}`;}).join('')}
+</div><hr class="rdiv">`;
+
+  /* ── 선택 없을 때: 간단 추가 ── */
+  if(!sel){
+    rs.innerHTML=catTree+`
+<div class="rsec">
+  <div class="rlbl" style="color:var(--text-tertiary);font-weight:400;font-size:12px">노드를 선택하면 편집할 수 있어요</div>
+  <div class="rslbl" style="margin-top:10px">부메인 빠르게 추가</div>
+  <div style="display:flex;gap:5px">
+    <input class="rinput" id="quick-txt" placeholder="이름 입력" style="margin:0;flex:1" onkeydown="if(event.key==='Enter')quickAddSub()"/>
+    <button class="rbtn" style="width:auto;padding:0 10px;margin:0;flex-shrink:0" onclick="quickAddSub()">추가</button>
+  </div>
+</div>
+<hr class="rdiv">
+<div class="rsec">
+  <button class="rbtn pri" onclick="openPrintPreview()">🖨 인쇄 미리보기</button>
+</div>`;
+    return;
+  }
+
+  /* ── 선택된 노드 컨텍스트 ── */
+  const colorPicker = (sel.level===0||sel.level===1)?`
+<div class="color-picker-box" style="margin-top:8px">
+  <div class="rslbl">색상 설정</div>
+  <div class="cprow"><label class="cplbl">배경</label><input type="color" class="cpinput" id="cp-fill" value="${sel.level===0?(sel.customColors?.fill||'#1a1a18'):selPal.fill}" oninput="previewColor('fill',this.value)"><span class="cpval" id="cpv-fill" onclick="copyHex(this)">${sel.level===0?(sel.customColors?.fill||'#1a1a18'):selPal.fill}</span></div>
+  <div class="cprow"><label class="cplbl">텍스트</label><input type="color" class="cpinput" id="cp-text" value="${sel.level===0?(sel.customColors?.text||'#ffffff'):selPal.text}" oninput="previewColor('text',this.value)"><span class="cpval" id="cpv-text" onclick="copyHex(this)">${sel.level===0?(sel.customColors?.text||'#ffffff'):selPal.text}</span></div>
+  ${sel.level===1?`<div class="cprow"><label class="cplbl">테두리</label><input type="color" class="cpinput" id="cp-stroke" value="${selPal.stroke}" oninput="previewColor('stroke',this.value)"><span class="cpval" id="cpv-stroke" onclick="copyHex(this)">${selPal.stroke}</span></div>`:''}
+  <div style="display:flex;gap:6px;margin-top:7px"><button class="rbtn" style="flex:1" onclick="applyColor()">✓ 적용</button><button class="rbtn" style="flex:1" onclick="resetColor()">↺ 초기화</button></div>
+</div>`:''
+
+  rs.innerHTML=catTree+`
+<div class="rsec">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+    <div class="rlbl" style="margin:0;border:none;padding:0">${sel.text||'(미입력)'} 편집</div>
+    <button onclick="selectNode(null)" style="border:none;background:none;cursor:pointer;font-size:11px;color:var(--text-tertiary);padding:2px 4px">✕ 닫기</button>
+  </div>
+  <div class="rslbl">이름</div>
+  <input class="rinput" id="e-txt" value="${sel.text||''}" placeholder="이름" />
+  ${showSched ? schedUI('edit', sel.schedule?sel.schedule:editSched) : ''}
+  <div class="rslbl">메모</div>
+  <textarea class="rtarea" id="e-memo" placeholder="메모...">${sel.memo||''}</textarea>
+  ${colorPicker}
+  <div style="display:flex;gap:5px;margin-top:4px">
+    <button class="rbtn pri" style="flex:2" onclick="applyEdit()">✓ 수정 적용</button>
+    ${sel.level>0?`<button class="rbtn dan" style="flex:1" onclick="deleteNode()">삭제</button>`:''}
+  </div>
+</div>
+<hr class="rdiv">
+<div class="rsec">
+  <div class="rlbl">하위 노드 추가</div>
+  <div class="rslbl" style="font-size:10px;opacity:.7">→ "${sel.text||'선택된 노드'}" 아래에 추가</div>
+  <input class="rinput" id="n-txt" placeholder="새 항목 이름" onkeydown="if(event.key==='Enter')addNodeToSelected()"/>
+  <div id="new-sched-wrap" style="margin-top:2px">${schedUI('new', newSched)}</div>
+  <div class="rslbl">메모 (선택)</div>
+  <textarea class="rtarea" id="n-memo" placeholder="메모 내용"></textarea>
+  <button class="rbtn" onclick="addNodeToSelected()">+ 하위 추가</button>
+</div>
+<hr class="rdiv">
+<div class="rsec">
+  <button class="rbtn pri" onclick="openPrintPreview()">🖨 인쇄 미리보기</button>
+</div>`;
+}
+
+function quickAddSub(){
+  const el=document.getElementById('quick-txt'); if(!el)return;
+  const txt=el.value.trim(); if(!txt)return;
+  const root=nodes.find(n=>n.level===0); if(!root)return;
+  const rc=nodes.filter(n=>n.level===1).length%7;
+  saveHistory();
+  const spawnR=62+54+50, angle=Math.random()*Math.PI*2;
+  const newNode={id:++seq,pid:root.id,text:txt,level:1,memo:'',color:rc,
+    x:root.x+Math.cos(angle)*spawnR, y:root.y+Math.sin(angle)*spawnR,
+    _dragged:true, schedule:emptySchedule(), customColors:null};
+  nodes.push(newNode); el.value='';
+  selected=newNode.id; render();
+}
+function addNodeToSelected(){
+  const pid=selected||1;
+  const el=document.getElementById('n-txt'); if(!el)return;
+  const txt=el.value.trim(); if(!txt)return;
+  const memo=(document.getElementById('n-memo')||{}).value||'';
+  const parent=byId(pid), level=parent?parent.level+1:1;
+  const rc=level<=1?nodes.filter(n=>n.level===1).length%7:rootColor(parent);
+  saveHistory();
+  const E=EL[level]||EL[3], pE=EL[parent?parent.level:0]||EL[0];
+  const spawnR=pE.rx+E.rx+50, angle=Math.random()*Math.PI*2;
+  const px=parent?parent.x:cw()/2, py=parent?parent.y:ch()/2;
+  const newNode={id:++seq,pid,text:txt,level,memo,color:rc,
+    x:px+Math.cos(angle)*spawnR, y:py+Math.sin(angle)*spawnR,
+    _dragged:true, schedule:{...newSched,days:[...newSched.days]}, customColors:null};
+  nodes.push(newNode); newSched=emptySchedule();
+  el.value=''; if(document.getElementById('n-memo'))document.getElementById('n-memo').value='';
+  selected=newNode.id; render();
+}
+  const pid=parseInt(document.getElementById('n-pid').value)||1;
+  const txt=document.getElementById('n-txt').value.trim(); if(!txt)return;
+  const memo=document.getElementById('n-memo').value.trim();
+  const parent=byId(pid), level=parent?parent.level+1:1;
+  const rc=level<=1?nodes.filter(n=>n.level===1).length%7:rootColor(parent);
+  saveHistory();
+  /* 부모 근처에 배치 */
+  const E=EL[level]||EL[3];
+  const pE=EL[parent?parent.level:0]||EL[0];
+  const spawnR=pE.rx+E.rx+50;
+  const angle=Math.random()*Math.PI*2;
+  const px=parent?parent.x:cw()/2, py=parent?parent.y:ch()/2;
+  const newNode={id:++seq,pid,text:txt,level,memo,color:rc,
+    x:px+Math.cos(angle)*spawnR, y:py+Math.sin(angle)*spawnR,
+    _dragged:true, schedule:{...newSched,days:[...newSched.days]}, customColors:null};
+  nodes.push(newNode);
+  newSched=emptySchedule();
+  document.getElementById('n-txt').value=''; document.getElementById('n-memo').value='';
+  selected=newNode.id;
+  render();
+}
+function applyEdit(){
+  if(!selected)return; saveHistory();
+  const n=byId(selected);
+  n.text=document.getElementById('e-txt').value.trim();
+  n.memo=document.getElementById('e-memo').value.trim();
+  if(n.level>=2) n.schedule={...editSched,days:[...editSched.days]};
+  showToast('✓ 수정됐어요');
+  render();
+}
+function deleteNode(){
+  if(!selected)return;
+  if(selected===1){showToast('⚠️ 메인 노드는 삭제할 수 없어요');return;}
+  saveHistory();
+  const rm=new Set([selected]); let changed=true;
+  while(changed){changed=false;nodes.forEach(n=>{if(rm.has(n.pid)&&!rm.has(n.id)){rm.add(n.id);changed=true;}});}
+  nodes=nodes.filter(n=>!rm.has(n.id)); selected=null;
+  showToast('🗑 삭제됐어요  •  Ctrl+Z 로 되돌리기');
+  render();
+}
+function exportText(){
+  const root=nodes.find(n=>n.level===0); let out=root.text.replace('\n',' ')+'\n\n';
+  kids(root.id).forEach(sub=>{ out+=`【${sub.text.replace('\n',' ')}】\n`; kids(sub.id).forEach(task=>{ out+=`  · ${task.text.replace('\n',' ')}`; const lbl=schedLabel(task.schedule); if(lbl)out+=` — ${lbl}`; if(task.memo)out+=`\n    메모: ${task.memo}`; out+='\n'; }); out+='\n'; });
+  const blob=new Blob([out],{type:'text/plain;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='루틴_마인드맵.txt'; a.click();
+}
+
+/* ── 인쇄 미리보기 ── */
+function openPrintPreview(){
+  /* 확장형: A4 가로 (1123×794), 나머지: A4 세로 (794×1123) */
+  const isLandscape = mode==='expand';
+  const A4W = isLandscape ? 1123 : 794;
+  const A4H = isLandscape ? 794  : 1123;
+  const root=nodes.find(n=>n.level===0);
+  let svgContent='';
+
+  if(mode==='expand'){
+    const allN=nodes.filter(n=>n.x!==undefined);
+    const xs=allN.map(n=>n.x), ys=allN.map(n=>n.y);
+    const minX=Math.min(...xs)-90, maxX=Math.max(...xs)+90;
+    const minY=Math.min(...ys)-90, maxY=Math.max(...ys)+90;
+    const contentW=maxX-minX, contentH=maxY-minY;
+    const scale=Math.min((A4W-80)/contentW,(A4H-80)/contentH,1.2);
+    const offX=(A4W-(contentW*scale))/2-minX*scale;
+    const offY=(A4H-(contentH*scale))/2-minY*scale;
+    let edges='';
+    function edgesFor(node){ kids(node.id).forEach(c=>{ const pal=nodePal(c); const mx=(node.x+c.x)/2,my=(node.y+c.y)/2,dx=c.x-node.x,dy=c.y-node.y,len=Math.sqrt(dx*dx+dy*dy)||1; const s=(c.id%2===0?1:-1),ox=(-dy/len)*s*len*.09,oy=(dx/len)*s*len*.09; edges+=`<path d="M${node.x} ${node.y} Q${mx+ox} ${my+oy} ${c.x} ${c.y}" fill="none" stroke="${pal.stroke}" stroke-width="${node.level===0?1.8:1.1}" opacity="${node.level===0?.45:.28}" stroke-linecap="round"/>`; edgesFor(c); }); }
+    edgesFor(root);
+    let nodesStr='';
+    function nodesFor(node){
+      if(node.level===0){ const cc=node.customColors; nodesStr+=`<circle cx="${node.x}" cy="${node.y}" r="62" fill="${cc?.fill||'#1a1a18'}"/>`; node.text.split('\n').forEach((ln,i,a)=>{ nodesStr+=`<text x="${node.x}" y="${node.y+(i-(a.length-1)/2)*20}" text-anchor="middle" dominant-baseline="central" fill="${cc?.text||'#fff'}" font-size="16" font-weight="600" font-family="sans-serif">${ln}</text>`; }); return; }
+      const pal=nodePal(node),E=EL[node.level]||EL[3];
+      nodesStr+=`<ellipse cx="${node.x}" cy="${node.y}" rx="${E.rx}" ry="${E.ry}" fill="${pal.fill}" stroke="${pal.stroke}" stroke-width="1"/>`;
+      const fs=node.level===1?13:node.level===2?11:9;
+      node.text.split('\n').forEach((ln,i,a)=>{ nodesStr+=`<text x="${node.x}" y="${node.y+(i-(a.length-1)/2)*(fs+2)}" text-anchor="middle" dominant-baseline="central" fill="${pal.text}" font-size="${fs}" font-weight="600" font-family="sans-serif">${ln}</text>`; });
+      const lbl=schedLabel(node.schedule);
+      if(lbl) nodesStr+=`<text x="${node.x}" y="${node.y-E.ry-13}" text-anchor="middle" fill="${pal.stroke}" font-size="9" font-family="sans-serif">${lbl}</text>`;
+      if(node.memo){ node.memo.split('/').map(s=>s.trim()).forEach((ml,mi,arr)=>{ const mx2=node.x+E.rx+8,my2=node.y+(mi-(arr.length-1)/2)*17,mw=Math.min(ml.length*7+14,130),mh=15; nodesStr+=`<rect x="${mx2}" y="${my2-mh/2}" width="${mw}" height="${mh}" rx="5" fill="${pal.fill}" stroke="${pal.stroke}" stroke-width="0.5"/><text x="${mx2+6}" y="${my2}" dominant-baseline="central" fill="${pal.text}" font-size="9" font-family="sans-serif">${ml.length>16?ml.slice(0,15)+'…':ml}</text>`; }); }
+      kids(node.id).forEach(c=>nodesFor(c));
+    }
+    nodes.filter(n=>n.level>0).forEach(n=>nodesFor(n)); nodesFor(root);
+    svgContent=`<g transform="translate(${offX},${offY}) scale(${scale})">${edges}${nodesStr}</g>`;
+
+  } else if(mode==='list'){
+    let y=60, out='';
+    out+=`<text x="${A4W/2}" y="${y}" text-anchor="middle" font-size="20" font-weight="700" fill="#1a1a18" font-family="sans-serif">${root.text.replace('\n',' ')}</text>`; y+=36;
+    out+=`<line x1="50" y1="${y}" x2="${A4W-50}" y2="${y}" stroke="#ccc9c0" stroke-width="1"/>`; y+=22;
+    kids(root.id).forEach(sub=>{
+      const pal=nodePal(sub);
+      out+=`<rect x="50" y="${y-2}" width="${A4W-100}" height="30" rx="6" fill="${pal.fill}" stroke="${pal.stroke}" stroke-width="0.8"/>`;
+      out+=`<text x="63" y="${y+14}" fill="${pal.text}" font-size="14" font-weight="600" dominant-baseline="central" font-family="sans-serif">${sub.text.replace('\n',' ')}</text>`; y+=38;
+      kids(sub.id).forEach(task=>{
+        const tp=nodePal(task);
+        out+=`<text x="74" y="${y+8}" fill="${tp.text}" font-size="12" font-weight="500" dominant-baseline="central" font-family="sans-serif">· ${task.text.replace('\n',' ')}</text>`;
+        const lbl=schedLabel(task.schedule);
+        if(lbl) out+=`<text x="${A4W-60}" y="${y+8}" fill="${tp.text}" font-size="10" text-anchor="end" dominant-baseline="central" opacity=".75" font-family="sans-serif">${lbl}</text>`;
+        y+=22;
+        if(task.memo){ task.memo.split('/').forEach(m=>{ out+=`<text x="90" y="${y+5}" fill="#999890" font-size="10" dominant-baseline="central" font-family="sans-serif">→ ${m.trim()}</text>`; y+=17; }); }
+        y+=4;
+      }); y+=10;
+    });
+    svgContent=out;
+
+  } else {
+    const H_START=6,H_END=24,H_TOTAL=H_END-H_START;
+    const padL=48,padT=50,colW=Math.floor((A4W-padL)/7),gridH=A4H-padT-80,hPx=gridH/H_TOTAL;
+    let out='';
+    out+=`<text x="${A4W/2}" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#1a1a18" font-family="sans-serif">${root.text.replace('\n',' ')} — 주간 스케줄</text>`;
+    DAYS_KO.forEach((d,i)=>{ const x=padL+i*colW+colW/2; out+=`<text x="${x}" y="${padT-10}" text-anchor="middle" font-size="11" font-weight="600" fill="#555550" font-family="sans-serif">${d}</text><rect x="${padL+i*colW+1}" y="${padT}" width="${colW-2}" height="${gridH}" rx="4" fill="${i>=5?'#f7f6f3':'#ffffff'}" stroke="#e2dfd8" stroke-width="0.8"/>`; });
+    for(let h=H_START;h<=H_END;h+=2){ const y=padT+(h-H_START)*hPx; out+=`<text x="${padL-5}" y="${y}" text-anchor="end" dominant-baseline="central" fill="#999890" font-size="8" font-family="sans-serif">${String(h).padStart(2,'0')}:00</text>`; if(h>H_START) out+=`<line x1="${padL}" y1="${y}" x2="${A4W}" y2="${y}" stroke="#e2dfd8" stroke-width="0.5" stroke-dasharray="${h%6===0?'':'3,3'}"/>`; }
+    const colStack=Array.from({length:7},()=>[]);
+    nodes.filter(n=>n.level>=1&&n.schedule&&n.schedule.enabled&&n.schedule.type!=='monthly').forEach(task=>{
+      const pal=nodePal(task),s=task.schedule,dd=schedToDays(s);
+      dd.forEach(di=>{ const sh=Math.max(s.startHour,H_START),eh=Math.min(s.startHour+(s.duration||1),H_END),y=padT+(sh-H_START)*hPx,bh=(eh-sh)*hPx-2,overlap=colStack[di].filter(b=>b.sh<eh&&b.eh>sh).length,bw=Math.max(colW-10-overlap*4,20),bx=padL+di*colW+3+overlap*4; colStack[di].push({sh,eh}); out+=`<rect x="${bx}" y="${y}" width="${bw}" height="${Math.max(bh,14)}" rx="4" fill="${pal.fill}" stroke="${pal.stroke}" stroke-width="0.7"/><text x="${bx+5}" y="${y+Math.max(bh,14)/2}" dominant-baseline="central" fill="${pal.text}" font-size="9" font-weight="500" font-family="sans-serif">${task.text.length>7?task.text.slice(0,6)+'…':task.text}</text>`; });
+    });
+    svgContent=out;
+  }
+
+  /* 기존 모달 제거 후 새로 생성 */
+  const existing=document.getElementById('print-modal'); if(existing) existing.remove();
+  const modal=document.createElement('div');
+  modal.id='print-modal';
+  modal.innerHTML=`
+    <div id="print-backdrop" onclick="closePrintPreview()"></div>
+    <div id="print-sheet-wrap">
+      <div id="print-toolbar">
+        <span id="print-title">인쇄 미리보기 — ${mode==='expand'?'확장형 (가로)':mode==='list'?'리스트형':'스케줄 모드'}</span>
+        <div style="display:flex;gap:8px">
+          <button class="ptbtn" onclick="closePrintPreview()">닫기</button>
+          <button class="ptbtn pri" onclick="doPrint(${isLandscape})">🖨 인쇄</button>
+        </div>
+      </div>
+      <div id="print-scroll">
+        <div id="print-a4" style="${isLandscape?'width:'+A4W+'px;':''}">
+          <svg id="print-svg" xmlns="http://www.w3.org/2000/svg"
+            width="${A4W}" height="${A4H}" viewBox="0 0 ${A4W} ${A4H}">
+            <rect width="${A4W}" height="${A4H}" fill="white"/>
+            ${svgContent}
+          </svg>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function closePrintPreview(){
+  const m=document.getElementById('print-modal');
+  if(m) m.remove();
+}
+
+function doPrint(landscape){
+  const svg=document.getElementById('print-svg');
+  if(!svg) return;
+  const serializer=new XMLSerializer();
+  const svgStr=serializer.serializeToString(svg);
+  const win=window.open('','_blank','width=1000,height=800');
+  const w=landscape?'297mm':'210mm', h=landscape?'210mm':'297mm';
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>루틴 마인드맵</title>
+  <style>
+    @page { size:${landscape?'A4 landscape':'A4'}; margin:0; }
+    body { margin:0; padding:0; background:#fff; }
+    img { width:${w}; height:${h}; display:block; }
+  </style></head><body>`);
+  const blob=new Blob([svgStr],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  win.document.write(`<img src="${url}" onload="window.print();URL.revokeObjectURL('${url}')"/>`);
+  win.document.write('</body></html>');
+  win.document.close();
+}
+/* ── 색상 피커 ── */
+let pendingColors = {};
+function copyHex(el){
+  const hex=el.textContent.trim();
+  navigator.clipboard.writeText(hex).then(()=>showToast('📋 '+hex+' 복사됐어요')).catch(()=>{
+    /* 폴백: execCommand */
+    const ta=document.createElement('textarea'); ta.value=hex;
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); showToast('📋 '+hex+' 복사됐어요');
+  });
+}
+function previewColor(key, val){
+  pendingColors[key]=val;
+  const el=document.getElementById('cpv-'+key);
+  if(el) el.textContent=val;
+  /* 즉시 미리보기 */
+  const n=byId(selected); if(!n)return;
+  if(!n.customColors) n.customColors={};
+  n.customColors[key]=val;
+  if(mode==='expand') renderExpand();
+}
+function applyColor(){
+  const n=byId(selected); if(!n)return;
+  saveHistory();
+  if(!n.customColors) n.customColors={};
+  Object.assign(n.customColors, pendingColors);
+  pendingColors={};
+  showToast('✓ 색상이 적용됐어요');
+  render();
+}
+function resetColor(){
+  const n=byId(selected); if(!n)return;
+  saveHistory();
+  n.customColors=null;
+  pendingColors={};
+  showToast('↺ 기본 색상으로 초기화됐어요');
+  render();
+}
+function setMode(m){
+  mode=m; selected=null; cancelInlineEdit();
+  ['expand','list','sched'].forEach(x=>document.getElementById('mb-'+x).classList.toggle('act',x===m));
+  render();
+}
 window.addEventListener('resize',()=>render());
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();undo();}if(e.key==='Escape')cancelInlineEdit();});
+document.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();undo();} if(e.key==='Escape')cancelInlineEdit(); });
 render();
-
 </script>
 </body>
 </html>
