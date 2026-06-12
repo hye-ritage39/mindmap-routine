@@ -317,13 +317,18 @@ const DAYS_KO = ['월','화','수','목','금','토','일'];
 function emptySchedule(){ return { enabled:false, type:'daily', days:[], startHour:9, duration:1 }; }
 
 let seq=30, selected=null, mode='expand', monthlyPos='bottom';
+let editSched=emptySchedule(), newSched=emptySchedule();
+let inlineNodeId=null, pendingColors={};
+
+/* 팬/줌 */
+let vx=0, vy=0, vscale=1;
 let dragNode=null, dragOX=0, dragOY=0, didDrag=false;
-let editSched = emptySchedule();
-let newSched  = emptySchedule();
+let isPanning=false, panLast={x:0,y:0};
+let pinchStartDist=0, pinchStartScale=1;
 
-/* 인라인 편집 상태 */
-let inlineNodeId = null;
-
+/* 파일 관리 키 */
+const LS_KEY='nodi_files', LS_CUR='nodi_current', AUTO_KEY='nodi_autosave';
+let currentFileId=null;
 /* ── 히스토리 ── */
 const history=[];
 function saveHistory(){ history.push(JSON.stringify(nodes)); if(history.length>30)history.shift(); updateUndoBtn(); }
@@ -331,22 +336,99 @@ function undo(){ if(!history.length)return; nodes=JSON.parse(history.pop()); sel
 function updateUndoBtn(){ const b=document.getElementById('undo-btn'); if(b){b.disabled=history.length===0; b.style.opacity=history.length===0?'0.35':'1';} }
 function showToast(msg){ let t=document.getElementById('toast'); if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t);} t.textContent=msg; t.className='toast-show'; clearTimeout(t._timer); t._timer=setTimeout(()=>{t.className='';},2200); }
 
+/* ── 파일 관리 ── */
+function loadFileList(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'[]'); }catch(e){ return []; } }
+function saveFileList(list){ localStorage.setItem(LS_KEY,JSON.stringify(list)); }
+function toggleFilePanel(){
+  const wrap=document.getElementById('file-list-wrap'), arrow=document.getElementById('file-panel-arrow');
+  const open=wrap.classList.toggle('open'); arrow.classList.toggle('open',open);
+  if(open) renderFileList();
+}
+function renderFileList(){
+  const list=loadFileList(), el=document.getElementById('file-list'); if(!el)return;
+  if(!list.length){ el.innerHTML='<div style="font-size:11px;color:var(--text-tertiary);padding:6px 7px">저장된 파일 없음</div>'; return; }
+  el.innerHTML='';
+  list.slice().reverse().forEach(f=>{
+    const it=document.createElement('div'); it.className='fitem'+(f.id===currentFileId?' active':'');
+    it.innerHTML=`<span style="font-size:12px">📄</span><span class="fitem-name" title="${f.name}">${f.name}</span><button class="fitem-del" onclick="deleteFile('${f.id}',event)">✕</button>`;
+    it.addEventListener('click',()=>loadFile(f.id)); el.appendChild(it);
+  });
+}
+function saveCurrentFile(){
+  const root=nodes.find(n=>n.level===0);
+  const defaultName=root&&root.text?root.text.replace('\n',' '):'새 작업';
+  const name=prompt('파일 이름', currentFileId?(loadFileList().find(f=>f.id===currentFileId)?.name||defaultName):defaultName);
+  if(!name)return;
+  const list=loadFileList(), data={nodes:JSON.parse(JSON.stringify(nodes)),seq,vx,vy,vscale};
+  if(currentFileId){ const idx=list.findIndex(f=>f.id===currentFileId); if(idx>=0){list[idx].name=name;list[idx].data=data;list[idx].updated=Date.now();}else{list.push({id:currentFileId,name,data,created:Date.now(),updated:Date.now()});} }
+  else{ currentFileId='f'+Date.now(); list.push({id:currentFileId,name,data,created:Date.now(),updated:Date.now()}); }
+  saveFileList(list); localStorage.setItem(LS_CUR,currentFileId); showToast('💾 "'+name+'" 저장됐어요'); renderFileList();
+}
+function loadFile(id){
+  const list=loadFileList(), f=list.find(x=>x.id===id); if(!f)return;
+  if(!confirm('"'+f.name+'" 불러올까요?'))return;
+  nodes=JSON.parse(JSON.stringify(f.data.nodes)); seq=f.data.seq||10;
+  vx=f.data.vx||0; vy=f.data.vy||0; vscale=f.data.vscale||1;
+  currentFileId=id; localStorage.setItem(LS_CUR,id); selected=null;
+  nodes.forEach(n=>n._dragged=false); showToast('📂 "'+f.name+'" 불러왔어요'); renderFileList(); render();
+}
+function deleteFile(id,e){
+  e.stopPropagation(); const list=loadFileList(), f=list.find(x=>x.id===id); if(!f)return;
+  if(!confirm('"'+f.name+'" 삭제?'))return;
+  saveFileList(list.filter(x=>x.id!==id)); if(currentFileId===id)currentFileId=null;
+  showToast('🗑 삭제됐어요'); renderFileList();
+}
+function newFile(){
+  if(nodes.some(n=>n.text)){
+    if(!confirm('새 작업을 시작할까요?\n현재 작업은 💾 저장 후 진행하세요.'))return;
+  }
+  currentFileId=null; localStorage.removeItem(LS_CUR);
+  seq=10; vx=0; vy=0; vscale=1; selected=null;
+  nodes=[
+    {id:1,pid:null,text:'',level:0,memo:'',color:0,x:0,y:0,schedule:emptySchedule(),customColors:null},
+    {id:2,pid:1,  text:'',level:1,memo:'',color:0,x:0,y:0,schedule:emptySchedule(),customColors:null},
+    {id:3,pid:1,  text:'',level:1,memo:'',color:1,x:0,y:0,schedule:emptySchedule(),customColors:null},
+    {id:4,pid:2,  text:'',level:2,memo:'',color:0,x:0,y:0,schedule:emptySchedule(),customColors:null},
+  ];
+  showToast('✨ 새 작업을 시작해요');
+  renderFileList(); render();
+}
+
 /* ── 노드 데이터 ── */
-let nodes = [
-  {id:1,  pid:null, text:'블로그\n키우기', level:0, memo:'', color:0, x:0, y:0, schedule:emptySchedule()},
-  {id:2,  pid:1,    text:'네이버',         level:1, memo:'', color:0, x:0, y:0, schedule:emptySchedule()},
-  {id:3,  pid:1,    text:'티스토리',       level:1, memo:'', color:1, x:0, y:0, schedule:emptySchedule()},
-  {id:4,  pid:1,    text:'스레드 홍보',    level:1, memo:'', color:2, x:0, y:0, schedule:emptySchedule()},
-  {id:5,  pid:1,    text:'블로그 스팟',    level:1, memo:'', color:3, x:0, y:0, schedule:emptySchedule()},
-  {id:6,  pid:2, text:'경제 포스팅', level:2, memo:'반도체 ETF',           color:0, x:0, y:0,
-    schedule:{enabled:true, type:'weekdays', days:[0,1,2,3,4], startHour:21, duration:1}},
-  {id:7,  pid:2, text:'영화 후기',   level:2, memo:'영화 호퍼스',          color:0, x:0, y:0,
-    schedule:{enabled:true, type:'weekly',   days:[5],          startHour:20, duration:2}},
-  {id:8,  pid:3, text:'지원금 포스팅',level:2,memo:'냉방비 지원',          color:1, x:0, y:0,
-    schedule:{enabled:true, type:'weekly',   days:[1,3],        startHour:10, duration:1}},
-  {id:9,  pid:3, text:'방송 정보',   level:2, memo:'생생정보 / 6시 내고향',color:1, x:0, y:0,
-    schedule:{enabled:true, type:'weekdays', days:[0,1,2,3,4],  startHour:18, duration:1}},
-];
+/* ── 노드 초기화 ── */
+function blankNodes(){
+  return [
+    {id:1,pid:null,text:'',level:0,memo:'',color:0,x:0,y:0,schedule:emptySchedule(),customColors:null},
+    {id:2,pid:1,text:'',level:1,memo:'',color:0,x:0,y:0,schedule:emptySchedule(),customColors:null},
+    {id:3,pid:1,text:'',level:1,memo:'',color:1,x:0,y:0,schedule:emptySchedule(),customColors:null},
+    {id:4,pid:2,text:'',level:2,memo:'',color:0,x:0,y:0,schedule:emptySchedule(),customColors:null},
+  ];
+}
+
+let nodes = blankNodes();
+
+/* 마지막 저장 파일 자동 복원 */
+(function restoreSession(){
+  try {
+    const lastId = localStorage.getItem(LS_CUR);
+    if(lastId){
+      const list = JSON.parse(localStorage.getItem(LS_KEY)||'[]');
+      const f = list.find(x=>x.id===lastId);
+      if(f){ nodes=JSON.parse(JSON.stringify(f.data.nodes)); seq=f.data.seq||10; vx=f.data.vx||0; vy=f.data.vy||0; vscale=f.data.vscale||1; currentFileId=lastId; return; }
+    }
+    /* 자동저장 복원 */
+    const raw=localStorage.getItem(AUTO_KEY);
+    if(raw){
+      const d=JSON.parse(raw);
+      const min=Math.round((Date.now()-d.savedAt)/60000);
+      const label=min<1?'방금 전':min+'분 전';
+      if(confirm('자동저장된 작업이 있어요 ('+label+'). 불러올까요?')){
+        nodes=JSON.parse(JSON.stringify(d.nodes)); seq=d.seq||10;
+        vx=d.vx||0; vy=d.vy||0; vscale=d.vscale||1;
+      }
+    }
+  } catch(e){ nodes=blankNodes(); }
+})();
 
 function kids(pid){ return nodes.filter(n=>n.pid===pid); }
 function byId(id){ return nodes.find(n=>n.id===id); }
@@ -851,17 +933,17 @@ function setMonthlyCount(prefix,v){ (prefix==='new'?newSched:editSched).monthlyC
 function renderRight(){
   const rs=document.getElementById('rscroll');
   const sel=selected?byId(selected):null;
-  const root=nodes.find(n=>n.level===0); if(!root){rs.innerHTML='';return;}
-  const subs=kids(root.id);
+  const root=nodes.find(n=>n.level===0);
+  const subs=root?kids(root.id):[];
   if(sel&&sel.schedule) editSched={...sel.schedule,days:[...(sel.schedule.days||[])]};
   const selPal=sel?nodePal(sel):null;
   const showSched=sel&&sel.level>=1;
 
-  /* ── 카테고리 트리 ── */
+  /* ── 카테고리 트리 (항상 표시) ── */
   const catTree=`
 <div class="rsec">
   <div class="rlbl">카테고리</div>
-  <button class="r-main-btn${selected===root.id?' sel':''}" onclick="selectNode(${root.id})">
+  ${root?`<button class="r-main-btn${selected===root.id?' sel':''}" onclick="selectNode(${root.id})">
     <span class="r-main-dot" style="background:${root.customColors?.fill||'#1a1a18'}"></span>
     <span>${root.text||'(제목 없음)'}</span>
   </button>
@@ -870,50 +952,55 @@ function renderRight(){
     <span class="r-sub-dot" style="background:${p.stroke}"></span>
     <span style="color:${selected===sub.id?'inherit':p.text}">${sub.text||'(미입력)'}</span>
   </button>
-  ${kids(sub.id).map(t=>{const tp=nodePal(t);return`<button class="r-task-btn${selected===t.id?' sel':''}" onclick="selectNode(${t.id})"><span class="r-task-pre">└</span><span class="r-task-dot" style="background:${tp.stroke}"></span><span style="color:${selected===t.id?'inherit':tp.text}">${t.text||'(미입력)'}</span></button>`;}).join('')}`;}).join('')}
+  ${kids(sub.id).map(t=>{const tp=nodePal(t);return`<button class="r-task-btn${selected===t.id?' sel':''}" onclick="selectNode(${t.id})"><span class="r-task-pre">└</span><span class="r-task-dot" style="background:${tp.stroke}"></span><span style="color:${selected===t.id?'inherit':tp.text}">${t.text||'(미입력)'}</span></button>`;}).join('')}`;}).join('')}`
+  :'<div style="font-size:11px;color:var(--text-tertiary);padding:4px 2px">노드가 없어요. 새로 만들기를 눌러주세요.</div>'}
 </div><hr class="rdiv">`;
 
-  /* ── 선택 없을 때: 간단 추가 ── */
-  if(!sel){
-    rs.innerHTML=catTree+`
+  /* ── 빠른 추가 (항상 하단에 고정) ── */
+  const quickAdd=`
 <div class="rsec">
-  <div class="rlbl" style="color:var(--text-tertiary);font-weight:400;font-size:12px">노드를 선택하면 편집할 수 있어요</div>
-  <div class="rslbl" style="margin-top:10px">부메인 빠르게 추가</div>
-  <div style="display:flex;gap:5px">
+  <div class="rlbl">빠른 추가</div>
+  <div class="rslbl">${sel&&sel.level>=0?`"${sel.text||'선택된 노드'}" 아래에`:'메인 아래에'} 추가</div>
+  <div style="display:flex;gap:5px;margin-bottom:4px">
     <input class="rinput" id="quick-txt" placeholder="이름 입력" style="margin:0;flex:1" onkeydown="if(event.key==='Enter')quickAddSub()"/>
-    <button class="rbtn" style="width:auto;padding:0 10px;margin:0;flex-shrink:0" onclick="quickAddSub()">추가</button>
+    <button class="rbtn" style="width:auto;padding:0 12px;margin:0;flex-shrink:0" onclick="quickAddSub()">+</button>
   </div>
-</div>
+</div>`;
+
+  /* ── 선택 없을 때 ── */
+  if(!sel){
+    rs.innerHTML=catTree+quickAdd+`
 <hr class="rdiv">
 <div class="rsec">
+  <button class="rbtn" onclick="newFile()" style="margin-bottom:4px">✨ 새로 만들기</button>
   <button class="rbtn pri" onclick="openPrintPreview()">🖨 인쇄 미리보기</button>
 </div>`;
     return;
   }
 
   /* ── 선택된 노드 컨텍스트 ── */
-  const colorPicker = (sel.level===0||sel.level===1)?`
+  const colorPicker=(sel.level===0||sel.level===1)?`
 <div class="color-picker-box" style="margin-top:8px">
   <div class="rslbl">색상 설정</div>
   <div class="cprow"><label class="cplbl">배경</label><input type="color" class="cpinput" id="cp-fill" value="${sel.level===0?(sel.customColors?.fill||'#1a1a18'):selPal.fill}" oninput="previewColor('fill',this.value)"><span class="cpval" id="cpv-fill" onclick="copyHex(this)">${sel.level===0?(sel.customColors?.fill||'#1a1a18'):selPal.fill}</span></div>
   <div class="cprow"><label class="cplbl">텍스트</label><input type="color" class="cpinput" id="cp-text" value="${sel.level===0?(sel.customColors?.text||'#ffffff'):selPal.text}" oninput="previewColor('text',this.value)"><span class="cpval" id="cpv-text" onclick="copyHex(this)">${sel.level===0?(sel.customColors?.text||'#ffffff'):selPal.text}</span></div>
   ${sel.level===1?`<div class="cprow"><label class="cplbl">테두리</label><input type="color" class="cpinput" id="cp-stroke" value="${selPal.stroke}" oninput="previewColor('stroke',this.value)"><span class="cpval" id="cpv-stroke" onclick="copyHex(this)">${selPal.stroke}</span></div>`:''}
   <div style="display:flex;gap:6px;margin-top:7px"><button class="rbtn" style="flex:1" onclick="applyColor()">✓ 적용</button><button class="rbtn" style="flex:1" onclick="resetColor()">↺ 초기화</button></div>
-</div>`:''
+</div>`:'';
 
   rs.innerHTML=catTree+`
 <div class="rsec">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-    <div class="rlbl" style="margin:0;border:none;padding:0">${sel.text||'(미입력)'} 편집</div>
-    <button onclick="selectNode(null)" style="border:none;background:none;cursor:pointer;font-size:11px;color:var(--text-tertiary);padding:2px 4px">✕ 닫기</button>
+    <div class="rlbl" style="margin:0;border:none;padding:0;border-bottom:none">${sel.text||'(미입력)'} 편집</div>
+    <button onclick="selectNode(null)" style="border:none;background:none;cursor:pointer;font-size:11px;color:var(--text-tertiary);padding:2px 4px">✕</button>
   </div>
   <div class="rslbl">이름</div>
   <input class="rinput" id="e-txt" value="${sel.text||''}" placeholder="이름" />
-  ${showSched ? schedUI('edit', sel.schedule?sel.schedule:editSched) : ''}
+  ${showSched?schedUI('edit',sel.schedule?sel.schedule:editSched):''}
   <div class="rslbl">메모</div>
   <textarea class="rtarea" id="e-memo" placeholder="메모...">${sel.memo||''}</textarea>
   ${colorPicker}
-  <div style="display:flex;gap:5px;margin-top:4px">
+  <div style="display:flex;gap:5px;margin-top:6px">
     <button class="rbtn pri" style="flex:2" onclick="applyEdit()">✓ 수정 적용</button>
     ${sel.level>0?`<button class="rbtn dan" style="flex:1" onclick="deleteNode()">삭제</button>`:''}
   </div>
@@ -921,15 +1008,18 @@ function renderRight(){
 <hr class="rdiv">
 <div class="rsec">
   <div class="rlbl">하위 노드 추가</div>
-  <div class="rslbl" style="font-size:10px;opacity:.7">→ "${sel.text||'선택된 노드'}" 아래에 추가</div>
-  <input class="rinput" id="n-txt" placeholder="새 항목 이름" onkeydown="if(event.key==='Enter')addNodeToSelected()"/>
-  <div id="new-sched-wrap" style="margin-top:2px">${schedUI('new', newSched)}</div>
+  <div class="rslbl" style="font-size:10px;opacity:.7">→ "${sel.text||'선택된 노드'}" 아래에</div>
+  <div style="display:flex;gap:5px;margin-bottom:4px">
+    <input class="rinput" id="n-txt" placeholder="새 항목 이름" style="margin:0;flex:1" onkeydown="if(event.key==='Enter')addNodeToSelected()"/>
+    <button class="rbtn" style="width:auto;padding:0 12px;margin:0;flex-shrink:0" onclick="addNodeToSelected()">+</button>
+  </div>
+  ${schedUI('new',newSched)}
   <div class="rslbl">메모 (선택)</div>
   <textarea class="rtarea" id="n-memo" placeholder="메모 내용"></textarea>
-  <button class="rbtn" onclick="addNodeToSelected()">+ 하위 추가</button>
 </div>
 <hr class="rdiv">
 <div class="rsec">
+  <button class="rbtn" onclick="newFile()" style="margin-bottom:4px">✨ 새로 만들기</button>
   <button class="rbtn pri" onclick="openPrintPreview()">🖨 인쇄 미리보기</button>
 </div>`;
 }
@@ -938,12 +1028,17 @@ function quickAddSub(){
   const el=document.getElementById('quick-txt'); if(!el)return;
   const txt=el.value.trim(); if(!txt)return;
   const root=nodes.find(n=>n.level===0); if(!root)return;
-  const rc=nodes.filter(n=>n.level===1).length%7;
+  const pid=selected||root.id;
+  const parent=byId(pid);
+  const level=parent?parent.level+1:1;
+  const rc=level<=1?nodes.filter(n=>n.level===1).length%7:rootColor(parent);
   saveHistory();
-  const spawnR=62+54+50, angle=Math.random()*Math.PI*2;
-  const newNode={id:++seq,pid:root.id,text:txt,level:1,memo:'',color:rc,
-    x:root.x+Math.cos(angle)*spawnR, y:root.y+Math.sin(angle)*spawnR,
-    _dragged:true, schedule:emptySchedule(), customColors:null};
+  const E=EL[level]||EL[3], pE=EL[parent?parent.level:0]||EL[0];
+  const spawnR=pE.rx+E.rx+50, angle=Math.random()*Math.PI*2;
+  const px=parent?parent.x:root.x, py=parent?parent.y:root.y;
+  const newNode={id:++seq,pid,text:txt,level,memo:'',color:rc,
+    x:px+Math.cos(angle)*spawnR, y:py+Math.sin(angle)*spawnR,
+    _dragged:true,schedule:emptySchedule(),customColors:null};
   nodes.push(newNode); el.value='';
   selected=newNode.id; render();
 }
@@ -1134,7 +1229,6 @@ function doPrint(landscape){
   win.document.close();
 }
 /* ── 색상 피커 ── */
-let pendingColors = {};
 function copyHex(el){
   const hex=el.textContent.trim();
   navigator.clipboard.writeText(hex).then(()=>showToast('📋 '+hex+' 복사됐어요')).catch(()=>{
